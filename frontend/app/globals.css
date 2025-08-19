@@ -1,0 +1,81 @@
+@import "tailwindcss";
+
+@font-face {
+  font-family: 'Gilroy-Bold';
+  src: local('Gilroy-Bold'), url('/fonts/gilroy-bold/Gilroy-Bold.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Gilroy-Heavy';
+  src: local('Gilroy-Heavy'), url('/fonts/gilroy-bold/Gilroy-Heavy.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Gilroy-Medium';
+  src: local('Gilroy-Medium'), url('/fonts/gilroy-bold/Gilroy-Medium.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Gilroy-Regular';
+  src: local('Gilroy-Regular'), url('/fonts/gilroy-bold/Gilroy-Regular.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Gilroy-Light';
+  src: local('Gilroy-Light'), url('/fonts/gilroy-bold/Gilroy-Light.ttf') format('truetype');
+}
+
+:root {
+  --background: #ffffff;
+  --foreground: #0b3558;
+  --bluecolor: #0060EB;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+}
+
+/* Style des titres h1,h2..h4 */
+h1,h2,h3,h4{
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  transition: .1s;
+}
+
+/* Style des balises a */
+a:hover{
+  transition: .1s;
+  color: var(--bluecolor);
+}
+a:active, a.active{
+  color: var(--bluecolor);
+}
+
+/* Style des balises a */
+.submenu{
+  padding: 20px 16px;
+  background: #d9d9d954;
+  border-radius: calc(infinity * 1px);
+  font-weight: 520;
+}
+
+/* Style des balises a */
+.bg-profondeur{
+  background: url("../public/images/profondeur.png") no-repeat center;
+  background-size: cover;
+}
