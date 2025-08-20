@@ -1,4 +1,7 @@
 "use client";
+import { collection, addDoc } from "firebase/firestore";
+import { db } from "../lib/Firebase";
+
 import React, { useState } from "react";
 import Navbar from "../components/layout/Navbar";
 import Button from "../components/ui/Button";
@@ -14,8 +17,10 @@ const TrialForm: React.FC = () => {
   });
 
   const [showSuggestions, setShowSuggestions] = useState(false);
-  const [errors, setErrors] = useState<{[key: string]: string}>({});
-  const [validFields, setValidFields] = useState<{[key: string]: boolean}>({});
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
+  const [validFields, setValidFields] = useState<{ [key: string]: boolean }>(
+    {}
+  );
 
   // Suggestions de fonctions dans une école de formation
   const positionSuggestions: string[] = [
@@ -60,14 +65,20 @@ const TrialForm: React.FC = () => {
   };
 
   const validateForm = () => {
-    const newErrors: {[key: string]: string} = {};
-    const newValidFields: {[key: string]: boolean} = {};
+    const newErrors: { [key: string]: string } = {};
+    const newValidFields: { [key: string]: boolean } = {};
 
     // Validation nom complet
+    const NameRegex =
+      /^(?!.*[<>{}()[\]"';=`$\\#])[a-zA-ZÀ-ÿ\u0100-\u017F\u0180-\u024F\u1E00-\u1EFF\s\-'.]{2,50}$/;
+
     if (!formData.fullName.trim()) {
       newErrors.fullName = "Le nom complet est obligatoire";
     } else if (formData.fullName.trim().length < 2) {
       newErrors.fullName = "Le nom doit contenir au moins 2 caractères";
+    } else if (!NameRegex.test(formData.fullName.trim())) {
+      newErrors.fullName =
+        "Veuillez saisir un nom complet valide (2-50 caractères, pas de caractères spéciaux)";
     } else {
       newValidFields.fullName = true;
     }
@@ -85,7 +96,8 @@ const TrialForm: React.FC = () => {
     if (!formData.institutionName.trim()) {
       newErrors.institutionName = "Le nom du centre est obligatoire";
     } else if (formData.institutionName.trim().length < 2) {
-      newErrors.institutionName = "Le nom du centre doit contenir au moins 2 caractères";
+      newErrors.institutionName =
+        "Le nom du centre doit contenir au moins 2 caractères";
     } else {
       newValidFields.institutionName = true;
     }
@@ -105,7 +117,8 @@ const TrialForm: React.FC = () => {
     if (!formData.institutionPhone.trim()) {
       newErrors.institutionPhone = "Le numéro de téléphone est obligatoire";
     } else if (!phoneRegex.test(formData.institutionPhone.replace(/\s/g, ""))) {
-      newErrors.institutionPhone = "Veuillez saisir un numéro de téléphone camerounais valide ex: +237 6XX XX XX XX";
+      newErrors.institutionPhone =
+        "Veuillez saisir un numéro de téléphone camerounais valide ex: +237 6XX XX XX XX";
     } else {
       newValidFields.institutionPhone = true;
     }
@@ -116,10 +129,19 @@ const TrialForm: React.FC = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (validateForm()) {
-      console.log("Données du formulaire:", formData);
-      // Ici vous pouvez ajouter la logique de soumission
+      try {
+        await addDoc(collection(db, "trialRequests"), {
+          ...formData,
+          createdAt: new Date(),
+        });
+
+        console.log("✅ Données envoyées avec succès !");
+        // tu peux afficher un message de succès à l’utilisateur ici
+      } catch (error) {
+        console.error("❌ Erreur lors de l'envoi :", error);
+      }
     }
   };
 
@@ -134,22 +156,31 @@ const TrialForm: React.FC = () => {
               Démarrez votre essai gratuit
             </h1>
             <p className="text-xl">
-              Profitez de <span className="text-violet-600 font-medium">2 mois d'accès gratuit</span> pour découvrir comment notre
-              plateforme peut simplifier la gestion de vos formations. <span className="text-violet-600 font-medium">Sans
-              engagement, sans carte bancaire</span>.
+              Profitez de{" "}
+              <span className="text-violet-600 font-medium">
+                2 mois d'accès gratuit
+              </span>{" "}
+              pour découvrir comment notre plateforme peut simplifier la gestion
+              de vos formations.{" "}
+              <span className="text-violet-600 font-medium">
+                Sans engagement, sans carte bancaire
+              </span>
+              .
             </p>
-            
-            {/* Messages d'erreur globaux */}
+
+            {/* Messages d'erreur globaux 
             {Object.keys(errors).length > 0 && (
               <div className="mt-6 p-4 bg-red-50 border-2 border-red-200 rounded-lg">
-                <p className="text-red-800 font-semibold mb-2">Veuillez corriger les erreurs suivantes :</p>
+                <p className="text-red-800 font-semibold mb-2">
+                  Veuillez corriger les erreurs suivantes :
+                </p>
                 <ul className="text-red-700 text-left list-disc list-inside space-y-1">
                   {Object.values(errors).map((error, index) => (
                     <li key={index}>{error}</li>
                   ))}
                 </ul>
               </div>
-            )}
+            )}*/}
           </div>
 
           {/* Form */}

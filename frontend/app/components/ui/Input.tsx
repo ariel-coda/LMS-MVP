@@ -51,7 +51,7 @@ const Input: React.FC<InputProps> = ({
         onFocus={onFocus}
         onBlur={onBlur}
         required={required}
-        className={`w-full px-6 py-4 text-lg border-2 ${getBorderColor()} outline-none transition-all duration-200`}
+        className={`w-full px-6 py-4 text-lg border-2 ${getBorderColor()} rounded-sm outline-none transition-all duration-200`}
         placeholder={placeholder}
       />
       {error && (
