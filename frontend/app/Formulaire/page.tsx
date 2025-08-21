@@ -1,7 +1,7 @@
 "use client";
 import { collection, addDoc } from "firebase/firestore";
 import { db } from "../lib/Firebase";
-
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import Navbar from "../components/layout/Navbar";
 import Button from "../components/ui/Button";
@@ -15,12 +15,12 @@ const TrialForm: React.FC = () => {
     institutionEmail: "",
     institutionPhone: "",
   });
-
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [validFields, setValidFields] = useState<{ [key: string]: boolean }>(
     {}
   );
+  const router = useRouter();
 
   // Suggestions de fonctions dans une école de formation
   const positionSuggestions: string[] = [
@@ -132,13 +132,27 @@ const TrialForm: React.FC = () => {
   const handleSubmit = async () => {
     if (validateForm()) {
       try {
+        // 1. Sauvegarde Firestore
         await addDoc(collection(db, "trialRequests"), {
           ...formData,
           createdAt: new Date(),
         });
 
-        console.log("✅ Données envoyées avec succès !");
-        // tu peux afficher un message de succès à l’utilisateur ici
+        // 2. Appel API envoi email
+        const res = await fetch("/api/send-trial", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(formData),
+        });
+
+        const result = await res.json();
+        if (result.success) {
+          console.log("✅ Email envoyé avec succès !");
+          // ici tu peux rediriger vers une page /success
+          router.push("/Formulaire/Success");
+        } else {
+          console.error("❌ Erreur API email :", result.error);
+        }
       } catch (error) {
         console.error("❌ Erreur lors de l'envoi :", error);
       }
