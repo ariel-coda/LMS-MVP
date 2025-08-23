@@ -8,7 +8,7 @@ type ButtonProps = {
 };
 
 const Button: React.FC<ButtonProps> = ({ label, onClick, type = "button", className }) => {
-  const defaultClass = "px-5 py-4 bg-[#121212] cursor-pointer hover:bg-[#000] hover:text-white transition";
+  const defaultClass = "px-5 py-4 bg-[#121212] cursor-pointer hover:bg-[#000] hover:text-white transition rounded-lg";
   return (
     <button
       type={type}

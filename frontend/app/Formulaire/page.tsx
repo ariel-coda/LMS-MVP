@@ -147,9 +147,8 @@ const TrialForm: React.FC = () => {
 
         const result = await res.json();
         if (result.success) {
-          console.log("✅ Email envoyé avec succès !");
-          // ici tu peux rediriger vers une page /success
-          router.push("/Formulaire/Success");
+          // redirection OK
+          router.push("/Formulaire/success");
         } else {
           console.error("❌ Erreur API email :", result.error);
         }
