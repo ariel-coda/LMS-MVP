@@ -1,8 +1,12 @@
 "use client";
+
+export const dynamic = "force-dynamic";
+
 import { supabase, type Filieres } from "@/app/lib/supabaseConfig";
 import ConfirmDialog from "../components/ui/dialog";
 import { useRouter } from "next/navigation";
 import React, { useState, useEffect } from "react";
+
 import {
   UserRound,
   FileSpreadsheet,
@@ -712,6 +716,7 @@ const Dashboard = () => {
         ])
         .select()
         .single();
+                  console.log(process.env.NEXT_PUBLIC_SUPABASE_URL)
 
       if (error) {
         if (error.code === "23505") {
