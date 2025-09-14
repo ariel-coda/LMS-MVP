@@ -14,7 +14,7 @@ interface RegisterData {
 
 // Expressions régulières pour validation côté serveur
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const phoneRegex = /^(\+33|0)[1-9](\d{8})$/;
+const phoneRegex = /^(\+237)6(\d{8})$/;
 const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#.\-_+])[A-Za-z\d@$!%*?&#.\-_+]{8,}$/;
 const nameRegex = /^[a-zA-ZÀ-ÿ\s-']{2,50}$/;
 
