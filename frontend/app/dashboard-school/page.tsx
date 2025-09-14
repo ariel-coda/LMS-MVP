@@ -102,7 +102,7 @@ interface Module {
   firebase_uid: string;
   date_creation: string;
   nombre_cours: number;
-  filieres?: Filieres[]; // Pour l&apos;affichage
+  filieres?: Filieres[]; // Pour l'affichage
 }
 
 interface CalendarEvent {
@@ -187,7 +187,7 @@ const Dashboard = () => {
   const [showCalendar, setShowCalendar] = useState(false);
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
-  // State pour l&apos;édition de module
+  // State pour l'édition de module
   const [showEditModuleForm, setShowEditModuleForm] = useState(false);
   const [editingModule, setEditingModule] = useState<Module | null>(null);
   const [editModuleForm, setEditModuleForm] = useState({
@@ -211,7 +211,7 @@ const Dashboard = () => {
     duration: 0,
     filières: [] as string[],
   });
-  // Charger les modules dès que l&apos;utilisateur est disponible
+  // Charger les modules dès que l'utilisateur est disponible
   useEffect(() => {
     if (user?.id) {
       loadModulesForUser(user.id);
@@ -314,7 +314,7 @@ const Dashboard = () => {
   const [showStudentForm, setShowStudentForm] = useState<boolean>(false);
   const [studentFormTab, setStudentFormTab] = useState<"excel" | "manual">(
     "excel"
-  ); // &apos;excel&apos; ou &apos;manual&apos;
+  ); // 'excel' ou 'manual'
   const [studentExcelFile, setStudentExcelFile] = useState<File | null>(null);
   const [showOptionalFields, setShowOptionalFields] = useState<boolean>(false);
   const [selectedOptionalFields, setSelectedOptionalFields] = useState<
@@ -364,7 +364,7 @@ const Dashboard = () => {
 
   const router = useRouter();
 
-  // Vérifier l&apos;authentification au chargement
+  // Vérifier l'authentification au chargement
   useEffect(() => {
     const checkAuth = async () => {
       try {
@@ -386,7 +386,7 @@ const Dashboard = () => {
           return;
         }
 
-        // Charger les données utilisateur D&apos;ABORD
+        // Charger les données utilisateur D'ABORD
         const parsedUser = JSON.parse(userData);
         setUser(parsedUser);
 
@@ -396,7 +396,7 @@ const Dashboard = () => {
         }
       } catch (error) {
         console.error(
-          "Erreur lors de la vérification de l&apos;authentification:",
+          "Erreur lors de la vérification de l'authentification:",
           error
         );
         localStorage.removeItem("authToken");
@@ -433,11 +433,11 @@ const Dashboard = () => {
   const loadFilieresForUser = async (userId: string) => {
     try {
       setLoadingFilieres(true);
-      // Charger les filières depuis Supabase pour l&apos;utilisateur donné et empecher que les autres écoles voient les filières des autres
+      // Charger les filières depuis Supabase pour l'utilisateur donné et empecher que les autres écoles voient les filières des autres
       const { data, error } = await supabase
         .from("filieres")
         .select("*")
-        .eq("firebase_uid", userId) //Filtrer par l&apos;ID de l&apos;utilisateur pour personnaliser les filières
+        .eq("firebase_uid", userId) //Filtrer par l'ID de l'utilisateur pour personnaliser les filières
         .order("created_at", { ascending: true });
       console.log("Filières chargées:", data);
 
@@ -473,14 +473,14 @@ const Dashboard = () => {
   // Supprimer un module avec son image
   const handleDeleteModule = async (moduleId: string) => {
     if (!user?.id) {
-      alert("Erreur d&apos;authentification");
+      alert("Erreur d'authentification");
       return;
     }
 
     if (!confirm("Êtes-vous sûr de vouloir supprimer ce module ?")) return;
 
     try {
-      // 1️⃣ Récupérer le module pour connaître l&apos;image
+      // 1️⃣ Récupérer le module pour connaître l'image
       const { data: moduleData, error: fetchError } = await supabase
         .from("modules")
         .select("image_url")
@@ -493,7 +493,7 @@ const Dashboard = () => {
         return;
       }
 
-      // 2️⃣ Supprimer l&apos;image si elle existe
+      // 2️⃣ Supprimer l'image si elle existe
       if (moduleData?.image_url) {
         const { error: storageError } = await supabase.storage
           .from("module_img")
@@ -523,7 +523,7 @@ const Dashboard = () => {
     }
   };
 
-  //Fonction d&apos;upload d&apos;image
+  //Fonction d'upload d'image
   const uploadImage = async (file: File) => {
     if (!file) return null;
 
@@ -611,20 +611,20 @@ const Dashboard = () => {
     }
 
     if (!user?.id) {
-      alert("Erreur d&apos;authentification");
+      alert("Erreur d'authentification");
       return;
     }
 
     try {
       setUploading(true);
 
-      // Upload de l&apos;image si présente
+      // Upload de l'image si présente
       let imageUrl = null;
       if (moduleForm.image_url) {
         imageUrl = await uploadImage(moduleForm.image_url);
       }
 
-      // Créer le module avec l&apos;URL de l&apos;image
+      // Créer le module avec l'URL de l'image
       const { data: moduleData, error: moduleError } = await supabase
         .from("modules")
         .insert([
@@ -690,7 +690,7 @@ const Dashboard = () => {
     }
 
     if (!user?.id) {
-      alert("Erreur d&apos;authentification");
+      alert("Erreur d'authentification");
       return;
     }
 
@@ -758,7 +758,7 @@ const Dashboard = () => {
 
       if (error) {
         console.error("Erreur suppression:", error);
-        // Ici tu peux ouvrir un autre petit dialog d&apos;erreur si tu veux
+        // Ici tu peux ouvrir un autre petit dialog d'erreur si tu veux
         return;
       }
 
@@ -801,7 +801,7 @@ const Dashboard = () => {
       return;
     }
 
-    // Vérifier si le nouveau nom existe déjà (sauf si c&apos;est le même)
+    // Vérifier si le nouveau nom existe déjà (sauf si c'est le même)
     if (
       editFiliereForm.nom.trim() !== editingFiliere.nom &&
       filieres.some((f) => f.nom === editFiliereForm.nom.trim())
@@ -828,7 +828,7 @@ const Dashboard = () => {
         return;
       }
 
-      // Mettre à jour l&apos;état local
+      // Mettre à jour l'état local
       setFilieres(filieres.map((f) => (f.id === editingFiliere.id ? data : f)));
 
       // Si le nom a changé, mettre à jour les modules associés
@@ -956,7 +956,7 @@ const Dashboard = () => {
       const errorMessage =
         error instanceof Error
           ? error.message
-          : "Une erreur inconnue s&apos;est produite";
+          : "Une erreur inconnue s'est produite";
       alert(`Erreur lors de la suppression de la section: ${errorMessage}`);
     }
   };
@@ -969,7 +969,7 @@ const Dashboard = () => {
     }
 
     if (!user?.id) {
-      alert("Erreur d&apos;authentification");
+      alert("Erreur d'authentification");
       return;
     }
 
@@ -996,7 +996,7 @@ const Dashboard = () => {
 
       if (jsonData.length < 2) {
         alert(
-          "Le fichier Excel doit contenir au moins une ligne d&apos;en-tête et une ligne de données"
+          "Le fichier Excel doit contenir au moins une ligne d'en-tête et une ligne de données"
         );
         return;
       }
@@ -1091,7 +1091,7 @@ const Dashboard = () => {
         return value.toString().trim();
       };
 
-      // Fonction de validation de l&apos;email
+      // Fonction de validation de l'email
       const isValidEmail = (email: string): boolean => {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return emailRegex.test(email);
@@ -1139,7 +1139,7 @@ const Dashboard = () => {
             continue;
           }
 
-          // Validation de l&apos;email
+          // Validation de l'email
           if (!isValidEmail(email)) {
             errors.push(`Ligne ${i + 1}: Email invalide (${email})`);
             continue;
@@ -1171,7 +1171,7 @@ const Dashboard = () => {
             errors.push(
               `Ligne ${
                 i + 1
-              }: Sexe invalide (${sexe}). Utilisez &apos;Masculin&apos; ou &apos;Féminin&apos;`
+              }: Sexe invalide (${sexe}). Utilisez 'Masculin' ou 'Féminin'`
             );
             continue;
           }
@@ -1191,7 +1191,7 @@ const Dashboard = () => {
             continue;
           }
 
-          // Construction de l&apos;objet étudiant
+          // Construction de l'objet étudiant
           const studentData: any = {
             nom,
             prenom,
@@ -1203,7 +1203,7 @@ const Dashboard = () => {
             created_at: new Date().toISOString(),
           };
 
-          // Ajout des champs optionnels s&apos;ils existent
+          // Ajout des champs optionnels s'ils existent
           if (columnMapping.matricule >= 0) {
             const matricule = cleanData(row[columnMapping.matricule]);
             if (matricule) studentData.matricule = matricule;
@@ -1255,7 +1255,7 @@ const Dashboard = () => {
         }
       }
 
-      // Affichage des erreurs s&apos;il y en a
+      // Affichage des erreurs s'il y en a
       if (errors.length > 0) {
         const showAllErrors = confirm(
           `${errors.length} erreur(s) détectée(s):\n\n${errors
@@ -1264,7 +1264,7 @@ const Dashboard = () => {
             errors.length > 5
               ? "\n\n... et " + (errors.length - 5) + " autres erreurs."
               : ""
-          }\n\nVoulez-vous continuer l&apos;import des étudiants valides (${
+          }\n\nVoulez-vous continuer l'import des étudiants valides (${
             studentsToInsert.length
           }) ?`
         );
@@ -1308,16 +1308,16 @@ const Dashboard = () => {
           }
         } catch (error) {
           console.error(
-            `Erreur lors de l&apos;insertion du lot ${
+            `Erreur lors de l'insertion du lot ${
               Math.floor(i / batchSize) + 1
             }:`,
             error
           );
-          // Continuer avec les autres lots même en cas d&apos;erreur
+          // Continuer avec les autres lots même en cas d'erreur
         }
       }
 
-      // Message de fin d&apos;import
+      // Message de fin d'import
       let message = `Import terminé!\n\n`;
       message += `✅ ${insertedCount} étudiant(s) importé(s) avec succès\n`;
       if (duplicateCount > 0) {
@@ -1339,9 +1339,9 @@ const Dashboard = () => {
       // Optionnel: Recharger la liste des étudiants si elle existe
       await loadStudents();
     } catch (error) {
-      console.error("Erreur lors de l&apos;import Excel:", error);
+      console.error("Erreur lors de l'import Excel:", error);
       alert(
-        `Erreur lors de l&apos;import: ${
+        `Erreur lors de l'import: ${
           error instanceof Error ? error.message : "Erreur inconnue"
         }`
       );
@@ -1469,7 +1469,7 @@ const Dashboard = () => {
     }
   };
 
-  // Obtenir les informations remplies d&apos;un étudiant
+  // Obtenir les informations remplies d'un étudiant
   const getFilledFields = (student: Student) => {
     const fields: { label: string; value: string }[] = [];
 
@@ -1482,14 +1482,14 @@ const Dashboard = () => {
       adresse: "Adresse",
       ville: "Ville",
       region: "Région",
-      pays_origine: "Pays d&apos;origine",
+      pays_origine: "Pays d'origine",
       profession: "Profession",
-      niveau_etude: "Niveau d&apos;étude",
+      niveau_etude: "Niveau d'étude",
       specialite: "Spécialité",
       filieres: "Filières",
-      annee_etude: "Année d&apos;étude",
+      annee_etude: "Année d'étude",
       situation_matrimoniale: "Situation matrimoniale",
-      contact_urgence: "Contact d&apos;urgence",
+      contact_urgence: "Contact d'urgence",
     };
 
     Object.entries(fieldMapping).forEach(([key, label]) => {
@@ -1513,7 +1513,7 @@ const Dashboard = () => {
     applyFiltersAndSort();
   }, [students, searchTerm, sortBy, sortOrder, filterByFiliere]);
 
-  // 3. Ajoutez cet useEffect pour charger les cours quand l&apos;utilisateur est disponible
+  // 3. Ajoutez cet useEffect pour charger les cours quand l'utilisateur est disponible
   useEffect(() => {
     if (user?.id) {
       loadAllCoursesForUser(user.id);
@@ -1536,7 +1536,7 @@ const Dashboard = () => {
     }
 
     if (!user?.id) {
-      alert("Erreur d&apos;authentification");
+      alert("Erreur d'authentification");
       return;
     }
 
@@ -1629,7 +1629,7 @@ const Dashboard = () => {
   // 6. Fonction pour supprimer un cours (mise à jour)
   const handleDeleteCourse = async (courseId: string) => {
     if (!user?.id) {
-      alert("Erreur d&apos;authentification");
+      alert("Erreur d'authentification");
       return;
     }
 
@@ -1652,7 +1652,7 @@ const Dashboard = () => {
     }
   };
 
-  // 7. Fonction pour gérer l&apos;édition d&apos;un cours
+  // 7. Fonction pour gérer l'édition d'un cours
   const handleEditCourse = (course: Course) => {
     setEditingCourse(course);
     setEditCourseForm({
@@ -1673,10 +1673,10 @@ const Dashboard = () => {
 
   const getFileName = (url: String) => {
     if (!url) return null;
-    // Extraire le nom du fichier depuis l&apos;URL ou le chemin
+    // Extraire le nom du fichier depuis l'URL ou le chemin
     const parts = url.split("/");
     const fileName = parts[parts.length - 1];
-    // Supprimer le timestamp et l&apos;ID aléatoire ajoutés lors de l&apos;upload
+    // Supprimer le timestamp et l'ID aléatoire ajoutés lors de l'upload
     const cleanName = fileName.replace(/^\d+_[a-z0-9]+\./, "");
     return cleanName || fileName;
   };
@@ -1880,7 +1880,7 @@ const Dashboard = () => {
       </div>
     );
   }
-  // Si l&apos;utilisateur n&apos;est pas défini, ne rien rendre
+  // Si l'utilisateur n'est pas défini, ne rien rendre
   if (!user) {
     return null;
   }
@@ -1985,14 +1985,14 @@ const Dashboard = () => {
     },
     analytics: {
       title: "Analysez les performances",
-      description: "Suivez les progrès et l&apos;engagement de vos étudiants.",
+      description: "Suivez les progrès et l'engagement de vos étudiants.",
       cta: "Voir les statistiques",
       icon: TrendingUp,
     },
     notifications: {
       title: "Restez informé",
       description:
-        "Configurez vos notifications pour ne rien manquer d&apos;important.",
+        "Configurez vos notifications pour ne rien manquer d'important.",
       cta: "Configurer",
       icon: Bell,
     },
@@ -2230,7 +2230,7 @@ const Dashboard = () => {
               key={module.id}
               className="bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-lg hover:border-gray-300 transition-all duration-300 overflow-hidden group"
             >
-              {/* Image d&apos;en-tête avec overlay moderne */}
+              {/* Image d'en-tête avec overlay moderne */}
               <div className="relative h-48 bg-gradient-to-br from-blue-600 to-blue-700 overflow-hidden">
                 {/* Image ou gradient par défaut */}
                 {module.image_url ? (
@@ -2247,7 +2247,7 @@ const Dashboard = () => {
                       </div>
                     </div>
                     {/* Pattern décoratif */}
-                    <div className="absolute inset-0 bg-[url(&apos;data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMjAiIGN5PSIyMCIgcj0iMiIgZmlsbD0iIzAwMCIgZmlsbC1vcGFjaXR5PSIwLjA1Ii8+Cjwvc3ZnPg==&apos;)] opacity-30"></div>
+                    <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMjAiIGN5PSIyMCIgcj0iMiIgZmlsbD0iIzAwMCIgZmlsbC1vcGFjaXR5PSIwLjA1Ii8+Cjwvc3ZnPg==')] opacity-30"></div>
                   </div>
                 )}
 
@@ -2412,7 +2412,7 @@ const Dashboard = () => {
   const renderFilieresContent = () => {
     return (
       <div>
-        {/* Si aucune filière, afficher l&apos;état vide */}
+        {/* Si aucune filière, afficher l'état vide */}
         {filieres.length === 0 ? (
           <div className="flex flex-col items-center justify-center min-h-[60vh] text-center px-6">
             <div className="w-20 h-20 bg-blue-50 rounded-2xl flex items-center justify-center mx-auto mb-6">
@@ -2455,7 +2455,7 @@ const Dashboard = () => {
               </button>
             </div>
 
-            {/* Grid avec hauteur minimale pour éviter l&apos;aplatissement */}
+            {/* Grid avec hauteur minimale pour éviter l'aplatissement */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {filieres.map((filiere) => {
                 // Calcul des modules associés
@@ -2469,7 +2469,7 @@ const Dashboard = () => {
                     key={filiere.id}
                     className="bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-lg hover:border-gray-300 transition-all duration-300 overflow-hidden group min-h-[280px] flex flex-col"
                   >
-                    {/* Contenu principal - flex-1 pour éviter l&apos;aplatissement */}
+                    {/* Contenu principal - flex-1 pour éviter l'aplatissement */}
                     <div className="flex-1 flex flex-col p-6 pt-4">
                       {/* Titre et description */}
                       <div className="mb-5">
@@ -2607,7 +2607,7 @@ const Dashboard = () => {
               key={course.id}
               className="bg-white rounded-xl border border-gray-200 hover:border-blue-200 transition-all duration-300 overflow-hidden"
             >
-              {/* Header avec couleur d&apos;accent subtile */}
+              {/* Header avec couleur d'accent subtile */}
               <div className=" px-4 sm:px-6 py-4 border-b border-gray-100">
                 <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                   <div className="flex-1 min-w-0">
@@ -2731,14 +2731,14 @@ const Dashboard = () => {
     </div>
   );
 
-  //Fonction pour ouvrir le modal de choix d&apos;exercice
+  //Fonction pour ouvrir le modal de choix d'exercice
   const handleAddExercice = (section: Section): void => {
     setSelectedSectionForExercise(section);
     setExerciseType(null);
     setShowExerciseForm(true);
   };
 
-  //Fonction pour choisir le type d&apos;exercice
+  //Fonction pour choisir le type d'exercice
   const selectExerciseType = (type: "pdf" | "qcm" | "qro"): void => {
     setExerciseType(type);
     setExerciseForm({
@@ -2885,7 +2885,7 @@ const Dashboard = () => {
     }
 
     if (!user?.id) {
-      alert("Erreur d&apos;authentification");
+      alert("Erreur d'authentification");
       return;
     }
 
@@ -2896,7 +2896,7 @@ const Dashboard = () => {
     try {
       setUploadingSection(true);
 
-      // 1. Vérifier que le cours appartient bien à l&apos;utilisateur
+      // 1. Vérifier que le cours appartient bien à l'utilisateur
       const { data: courseData, error: courseError } = await supabase
         .from("cours")
         .select(
@@ -2967,7 +2967,7 @@ const Dashboard = () => {
         await loadSectionsForCourse(cours_id);
       }
 
-      // 6. Mettre à jour le cours sélectionné si ce n&apos;est pas déjà fait
+      // 6. Mettre à jour le cours sélectionné si ce n'est pas déjà fait
       if (!selectedCourse || selectedCourse.id !== cours_id) {
         const newSelectedCourse = courses.find((c) => c.id === cours_id);
         setSelectedCourse(newSelectedCourse || null);
@@ -2988,7 +2988,7 @@ const Dashboard = () => {
     } catch (error) {
       console.error("Erreur lors de la création de la section:", error);
 
-      // Nettoyage en cas d&apos;erreur : supprimer les fichiers uploadés
+      // Nettoyage en cas d'erreur : supprimer les fichiers uploadés
       const cleanupPromises = [];
 
       if (pdfUrl) {
@@ -3003,7 +3003,7 @@ const Dashboard = () => {
         );
       }
 
-      // Exécuter le nettoyage sans bloquer l&apos;affichage de l&apos;erreur
+      // Exécuter le nettoyage sans bloquer l'affichage de l'erreur
       if (cleanupPromises.length > 0) {
         Promise.all(cleanupPromises).catch((cleanupError) =>
           console.error("Erreur lors du nettoyage:", cleanupError)
@@ -3013,7 +3013,7 @@ const Dashboard = () => {
       const errorMessage =
         error instanceof Error
           ? error.message
-          : "Une erreur inconnue s&apos;est produite";
+          : "Une erreur inconnue s'est produite";
       alert(`Erreur lors de la création de la section: ${errorMessage}`);
     } finally {
       setUploadingSection(false);
@@ -3060,7 +3060,7 @@ const Dashboard = () => {
         throw updateError;
       }
 
-      // 3. Recharger les sections pour mettre à jour l&apos;affichage
+      // 3. Recharger les sections pour mettre à jour l'affichage
       if (selectedCourse?.id) {
         await loadSectionsForCourse(selectedCourse.id);
       }
@@ -3071,12 +3071,12 @@ const Dashboard = () => {
       const errorMessage =
         error instanceof Error
           ? error.message
-          : "Une erreur inconnue s&apos;est produite";
+          : "Une erreur inconnue s'est produite";
       alert(`Erreur lors de la suppression du PDF: ${errorMessage}`);
     }
   };
 
-  // 2. Fonctions pour gérer l&apos;état des sections
+  // 2. Fonctions pour gérer l'état des sections
   const toggleSection = (sectionId: String) => {
     const newCollapsed = new Set(collapsedSections);
     if (newCollapsed.has(sectionId)) {
@@ -3111,7 +3111,7 @@ const Dashboard = () => {
       throw error;
     }
 
-    // Récupérer l&apos;URL publique
+    // Récupérer l'URL publique
     const {
       data: { publicUrl },
     } = supabase.storage.from(bucket as string).getPublicUrl(fileName);
@@ -3125,7 +3125,7 @@ const Dashboard = () => {
   const handleCreateExercise = async (): Promise<void> => {
     if (!exerciseForm.nom.trim() || !selectedSectionForExercise) {
       await loadAllExercises();
-      alert("Veuillez remplir le nom de l&apos;exercice");
+      alert("Veuillez remplir le nom de l'exercice");
       return;
     }
 
@@ -3158,7 +3158,7 @@ const Dashboard = () => {
           continue;
         }
 
-        // Vérifier qu&apos;au moins une option est marquée comme correcte
+        // Vérifier qu'au moins une option est marquée comme correcte
         const hasCorrectAnswer = question.options.some(
           (option) => option.is_correct === true
         );
@@ -3172,7 +3172,7 @@ const Dashboard = () => {
 
       if (questionsWithoutCorrectAnswers.length > 0) {
         alert(
-          `Les questions suivantes n&apos;ont pas de réponse correcte sélectionnée :\n\n${questionsWithoutCorrectAnswers.join(
+          `Les questions suivantes n'ont pas de réponse correcte sélectionnée :\n\n${questionsWithoutCorrectAnswers.join(
             "\n"
           )}\n\nVeuillez sélectionner au moins une réponse correcte pour chaque question.`
         );
@@ -3209,7 +3209,7 @@ const Dashboard = () => {
 
       let pdfUrl: string | null = null;
 
-      // Upload du PDF si c&apos;est un exercice PDF
+      // Upload du PDF si c'est un exercice PDF
       if (exerciseType === "pdf" && exerciseForm.pdf_file) {
         const pdfResult = await uploadFile(
           exerciseForm.pdf_file,
@@ -3221,7 +3221,7 @@ const Dashboard = () => {
         }
       }
 
-      // Créer l&apos;exercice principal
+      // Créer l'exercice principal
       const { data: exerciseData, error: exerciseError } = await supabase
         .from("exercises")
         .insert([
@@ -3242,7 +3242,7 @@ const Dashboard = () => {
 
       if (exerciseError) throw exerciseError;
 
-      // Créer les questions si c&apos;est un QCM ou QRO
+      // Créer les questions si c'est un QCM ou QRO
       if (
         (exerciseType === "qcm" || exerciseType === "qro") &&
         exerciseForm.questions.length > 0
@@ -3313,14 +3313,14 @@ const Dashboard = () => {
       const errorMessage =
         error instanceof Error
           ? error.message
-          : "Une erreur inconnue s&apos;est produite";
-      alert(`Erreur lors de la création de l&apos;exercice: ${errorMessage}`);
+          : "Une erreur inconnue s'est produite";
+      alert(`Erreur lors de la création de l'exercice: ${errorMessage}`);
     } finally {
       setUploading(false);
     }
   };
 
-  // Fonction pour ouvrir le formulaire d&apos;édition avec les données existantes
+  // Fonction pour ouvrir le formulaire d'édition avec les données existantes
   const openEditExerciseForm = async (exercise: any) => {
     try {
       setEditingExercise(exercise);
@@ -3394,20 +3394,20 @@ const Dashboard = () => {
 
       setShowEditExerciseForm(true);
 
-      console.log("✅ Formulaire d&apos;édition initialisé avec:", {
+      console.log("✅ Formulaire d'édition initialisé avec:", {
         exercise: exercise.nom,
         questionsCount: existingQuestions.length,
         type: exercise.type,
       });
     } catch (error) {
       console.error("Erreur ouverture formulaire édition:", error);
-      alert("Erreur lors du chargement des données de l&apos;exercice");
+      alert("Erreur lors du chargement des données de l'exercice");
     }
   };
 
   const handleUpdateExercise = async (): Promise<void> => {
     if (!editExerciseForm.nom.trim() || !editingExercise) {
-      alert("Veuillez remplir le nom de l&apos;exercice");
+      alert("Veuillez remplir le nom de l'exercice");
       return;
     }
 
@@ -3417,7 +3417,7 @@ const Dashboard = () => {
       !editingExercise.pdf_url &&
       !editExerciseForm.pdf_file
     ) {
-      alert("Veuillez sélectionner un fichier PDF ou conserver l&apos;existant");
+      alert("Veuillez sélectionner un fichier PDF ou conserver l'existant");
       return;
     }
 
@@ -3444,7 +3444,7 @@ const Dashboard = () => {
           continue;
         }
 
-        // Vérifier qu&apos;au moins une option est marquée comme correcte
+        // Vérifier qu'au moins une option est marquée comme correcte
         const hasCorrectAnswer = question.options.some(
           (option: any) => option.is_correct === true
         );
@@ -3458,7 +3458,7 @@ const Dashboard = () => {
 
       if (questionsWithoutCorrectAnswers.length > 0) {
         alert(
-          `Les questions suivantes n&apos;ont pas de réponse correcte sélectionnée :\n\n${questionsWithoutCorrectAnswers.join(
+          `Les questions suivantes n'ont pas de réponse correcte sélectionnée :\n\n${questionsWithoutCorrectAnswers.join(
             "\n"
           )}\n\nVeuillez sélectionner au moins une réponse correcte pour chaque question.`
         );
@@ -3493,7 +3493,7 @@ const Dashboard = () => {
     try {
       setUploading(true);
 
-      let pdfUrl: string | null = editingExercise.pdf_url; // ✅ Conserver l&apos;ancien PDF par défaut
+      let pdfUrl: string | null = editingExercise.pdf_url; // ✅ Conserver l'ancien PDF par défaut
 
       // Upload du nouveau PDF si présent
       if (editExerciseForm.pdf_file) {
@@ -3504,10 +3504,10 @@ const Dashboard = () => {
           "exercises/"
         );
         if (pdfResult) {
-          // Supprimer l&apos;ancien PDF s&apos;il existait
+          // Supprimer l'ancien PDF s'il existait
           if (editingExercise.pdf_url) {
             console.log(
-              "Suppression de l&apos;ancien PDF:",
+              "Suppression de l'ancien PDF:",
               editingExercise.pdf_url
             );
             const { error: deleteError } = await supabase.storage
@@ -3523,7 +3523,7 @@ const Dashboard = () => {
         }
       }
 
-      // Mettre à jour l&apos;exercice principal
+      // Mettre à jour l'exercice principal
       const { error: exerciseError } = await supabase
         .from("exercises")
         .update({
@@ -3546,7 +3546,7 @@ const Dashboard = () => {
       if (editingExercise.type === "qcm" || editingExercise.type === "qro") {
         // 1. Supprimer toutes les anciennes questions et leurs options
         if (editingExercise.type === "qcm") {
-          // Supprimer d&apos;abord les options (à cause des foreign keys)
+          // Supprimer d'abord les options (à cause des foreign keys)
           const { error: deleteOptionsError } = await supabase
             .from("exercise_options")
             .delete()
@@ -3645,8 +3645,8 @@ const Dashboard = () => {
       const errorMessage =
         error instanceof Error
           ? error.message
-          : "Une erreur inconnue s&apos;est produite";
-      alert(`Erreur lors de la modification de l&apos;exercice: ${errorMessage}`);
+          : "Une erreur inconnue s'est produite";
+      alert(`Erreur lors de la modification de l'exercice: ${errorMessage}`);
     } finally {
       setUploading(false);
     }
@@ -3713,7 +3713,7 @@ const Dashboard = () => {
     }
   };
 
-  // 6. Fonction pour obtenir les exercices d&apos;une section
+  // 6. Fonction pour obtenir les exercices d'une section
   const getExercisesForSection = (sectionId: string): ExerciseWithDetails[] => {
     return exercises.filter((ex) => ex.section_id === sectionId);
   };
@@ -3723,7 +3723,7 @@ const Dashboard = () => {
     if (!confirm("Êtes-vous sûr de vouloir supprimer cet exercice ?")) return;
 
     try {
-      // Récupérer l&apos;exercice pour supprimer le fichier PDF si nécessaire
+      // Récupérer l'exercice pour supprimer le fichier PDF si nécessaire
       const { data: exerciseData, error: fetchError } = await supabase
         .from("exercises")
         .select("pdf_url")
@@ -3739,7 +3739,7 @@ const Dashboard = () => {
           .remove([exerciseData.pdf_url]);
       }
 
-      // Supprimer l&apos;exercice (les questions et options seront supprimées en cascade)
+      // Supprimer l'exercice (les questions et options seront supprimées en cascade)
       const { error: deleteError } = await supabase
         .from("exercises")
         .delete()
@@ -3753,11 +3753,11 @@ const Dashboard = () => {
       console.log("✅ Exercice supprimé avec succès");
     } catch (error) {
       console.error("Erreur suppression exercice:", error);
-      alert("Erreur lors de la suppression de l&apos;exercice");
+      alert("Erreur lors de la suppression de l'exercice");
     }
   };
 
-  // 8. Fonction pour obtenir l&apos;URL du PDF d&apos;exercice
+  // 8. Fonction pour obtenir l'URL du PDF d'exercice
   const getExercisePdfUrl = (exercise: Exercise): string | null => {
     if (!exercise.pdf_url) return null;
     return getFilePublicUrl("exercise_pdfs", exercise.pdf_url);
@@ -3801,11 +3801,11 @@ const Dashboard = () => {
 
           <div className="p-6">
             {!exerciseType ? (
-              /* Sélection du type d&apos;exercice */
+              /* Sélection du type d'exercice */
               <div className="space-y-6">
                 <div className="text-center">
                   <h3 className="text-lg font-medium text-gray-900 mb-2">
-                    Quel type d&apos;exercice souhaitez-vous créer ?
+                    Quel type d'exercice souhaitez-vous créer ?
                   </h3>
                   <p className="text-gray-600 text-sm">
                     Choisissez le format qui convient le mieux à votre contenu
@@ -3873,7 +3873,7 @@ const Dashboard = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Nom de l&apos;exercice *
+                      Nom de l'exercice *
                     </label>
                     <input
                       type="text"
@@ -3952,7 +3952,7 @@ const Dashboard = () => {
                 {exerciseType === "pdf" && (
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Fichier PDF de l&apos;exercice *
+                      Fichier PDF de l'exercice *
                     </label>
                     <input
                       type="file"
@@ -4247,7 +4247,7 @@ const Dashboard = () => {
                   ) : (
                     <>
                       <Plus size={16} />
-                      Créer l&apos;exercice
+                      Créer l'exercice
                     </>
                   )}
                 </button>
@@ -4259,7 +4259,7 @@ const Dashboard = () => {
     );
   }
 
-  // Fonction pour ouvrir le modal d&apos;édition
+  // Fonction pour ouvrir le modal d'édition
   const handleEditSection = (section: Section) => {
     setEditingSection(section);
     setEditSectionForm({
@@ -4442,7 +4442,7 @@ const Dashboard = () => {
                           )}
                         </button>
 
-                        {/* Numéro d&apos;ordre */}
+                        {/* Numéro d'ordre */}
                         <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
                           <span className="text-sm font-bold text-blue-600">
                             {section.ordre}
@@ -4636,7 +4636,7 @@ const Dashboard = () => {
                                   >
                                     <div className="flex items-center justify-between">
                                       <div className="flex items-center gap-3">
-                                        {/* Icône selon le type d&apos;exercice */}
+                                        {/* Icône selon le type d'exercice */}
                                         <div className="w-8 h-8 rounded-lg flex items-center justify-center">
                                           {exercise.type === "pdf" && (
                                             <div className="bg-red-100 w-8 h-8 rounded-lg flex items-center justify-center">
@@ -4729,7 +4729,7 @@ const Dashboard = () => {
                                               handleDownloadExercise(exercise)
                                             }
                                             className="px-3 py-1.5 bg-red-50 text-red-600 hover:bg-red-100 rounded-md text-xs transition-colors flex items-center gap-1"
-                                            title="ouvrir l&apos;exercice PDF"
+                                            title="ouvrir l'exercice PDF"
                                           >
                                             <Eye size={12} />
                                           </button>
@@ -4741,7 +4741,7 @@ const Dashboard = () => {
                                             openEditExerciseForm(exercise);
                                           }}
                                           className="p-1.5 text-gray-400 hover:text-green-600 hover:bg-green-50 rounded-md transition-colors"
-                                          title="Modifier l&apos;exercice"
+                                          title="Modifier l'exercice"
                                         >
                                           <Pencil size={12} />
                                         </button>
@@ -4751,7 +4751,7 @@ const Dashboard = () => {
                                             handleDeleteExercise(exercise.id)
                                           }
                                           className="p-1.5 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-md transition-colors"
-                                          title="Supprimer l&apos;exercice"
+                                          title="Supprimer l'exercice"
                                         >
                                           <Trash2 size={12} />
                                         </button>
@@ -4869,7 +4869,7 @@ const Dashboard = () => {
               className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             >
               <option value="nom">Nom</option>
-              <option value="date_creation">Date d&apos;inscription</option>
+              <option value="date_creation">Date d'inscription</option>
               <option value="progression">Performance</option>
             </select>
 
@@ -5168,10 +5168,10 @@ const Dashboard = () => {
         description: description?.trim() || null,
         ordre: ordre,
         cours_id: cours_id,
-        pdf_url: editingSection.pdf_url, // ✅ Conserver l&apos;ancienne URL
-        has_pdf: editingSection.has_pdf, // ✅ Conserver l&apos;ancien statut
-        video_url: editingSection.video_url, // ✅ Conserver l&apos;ancienne URL
-        has_video: editingSection.has_video, // ✅ Conserver l&apos;ancien statut
+        pdf_url: editingSection.pdf_url, // ✅ Conserver l'ancienne URL
+        has_pdf: editingSection.has_pdf, // ✅ Conserver l'ancien statut
+        video_url: editingSection.video_url, // ✅ Conserver l'ancienne URL
+        has_video: editingSection.has_video, // ✅ Conserver l'ancien statut
       };
 
       // Si un nouveau PDF est uploadé
@@ -5179,9 +5179,9 @@ const Dashboard = () => {
         console.log("Upload du nouveau PDF en cours...");
         const pdfResult = await uploadFile(pdf_file, "section_pdfs", "pdfs/");
         if (pdfResult) {
-          // Supprimer l&apos;ancien PDF si il existe
+          // Supprimer l'ancien PDF si il existe
           if (editingSection.pdf_url) {
-            console.log("Suppression de l&apos;ancien PDF:", editingSection.pdf_url);
+            console.log("Suppression de l'ancien PDF:", editingSection.pdf_url);
             const { error: deleteError } = await supabase.storage
               .from("section_pdfs")
               .remove([`pdfs/${editingSection.pdf_url}`]); // ✅ Ajouter le préfixe pdfs/
@@ -5206,10 +5206,10 @@ const Dashboard = () => {
           "videos/"
         );
         if (videoResult) {
-          // Supprimer l&apos;ancienne vidéo si elle existe
+          // Supprimer l'ancienne vidéo si elle existe
           if (editingSection.video_url) {
             console.log(
-              "Suppression de l&apos;ancienne vidéo:",
+              "Suppression de l'ancienne vidéo:",
               editingSection.video_url
             );
             const { error: deleteError } = await supabase.storage
@@ -5261,7 +5261,7 @@ const Dashboard = () => {
       const errorMessage =
         error instanceof Error
           ? error.message
-          : "Une erreur inconnue s&apos;est produite";
+          : "Une erreur inconnue s'est produite";
       alert(`Erreur lors de la modification de la section: ${errorMessage}`);
     } finally {
       setUploadingSection(false);
@@ -5295,8 +5295,8 @@ const Dashboard = () => {
   };
 
   const renderContent = () => {
-    // Vue d&apos;ensemble du dashboard
-    // Vue d&apos;ensemble par défaut
+    // Vue d'ensemble du dashboard
+    // Vue d'ensemble par défaut
     if (activeMainTab === "dashboard") {
       return renderDashboardOverview();
     }
@@ -5411,7 +5411,7 @@ const Dashboard = () => {
                     : "text-gray-700 hover:bg-gray-50 hover:text-gray-900"
                 }`}
               >
-                {/* Conteneur d&apos;icône avec fond coloré pour l&apos;état actif */}
+                {/* Conteneur d'icône avec fond coloré pour l'état actif */}
                 <div
                   className={`w-9 h-9 rounded-lg flex items-center justify-center mr-3 transition-all duration-200 ${
                     activeMainTab === tab.id
@@ -5424,7 +5424,7 @@ const Dashboard = () => {
 
                 <span className="truncate">{tab.name}</span>
 
-                {/* Indicateur d&apos;expansion pour les sous-menus */}
+                {/* Indicateur d'expansion pour les sous-menus */}
                 {tab.subTabs && (
                   <div
                     className={`ml-auto transition-transform duration-200 ${
@@ -5444,7 +5444,7 @@ const Dashboard = () => {
                 )}
               </button>
 
-              {/* Sous-menu avec animation d&apos;apparition */}
+              {/* Sous-menu avec animation d'apparition */}
               {tab.subTabs && activeMainTab === tab.id && (
                 <div className="ml-3 mt-2 space-y-1 animate-in slide-in-from-left-2 duration-200">
                   {tab.subTabs.map((subTab, index) => (
@@ -5466,7 +5466,7 @@ const Dashboard = () => {
                         <div className="absolute left-0 top-0 bottom-0 w-0.5 bg-blue-600 rounded-full" />
                       )}
 
-                      {/* Conteneur d&apos;icône pour sous-menu */}
+                      {/* Conteneur d'icône pour sous-menu */}
                       <div
                         className={`w-7 h-7 rounded-md flex items-center justify-center mr-3 transition-all duration-200 ${
                           activeTab === subTab.id
@@ -5788,7 +5788,7 @@ const Dashboard = () => {
           </div>
         </div>
       )}
-      {/* Modal d&apos;édition de module */}
+      {/* Modal d'édition de module */}
       {showEditModuleForm && editingModule && (
         <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
           <div className="bg-white rounded-md shadow-xl w-full max-w-2xl max-h-screen overflow-y-auto">
@@ -5819,14 +5819,14 @@ const Dashboard = () => {
                   onChange={(e) => {
                     const file = e.target.files?.[0];
                     if (file) {
-                      setSelectedImage(file); // Stocker dans l&apos;état séparé
+                      setSelectedImage(file); // Stocker dans l'état séparé
                     }
                   }}
                   className="w-full px-3 py-2 mb-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
                   placeholder="Ex: Développement Web Moderne, Gestion de Projet..."
                 />
 
-                {/* Affichage de l&apos;image actuelle si elle existe */}
+                {/* Affichage de l'image actuelle si elle existe */}
                 {editModuleForm.image_url && (
                   <div className="mb-2">
                     <p className="text-sm text-gray-600 mb-1">
@@ -5876,7 +5876,7 @@ const Dashboard = () => {
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Nom de l&apos;auteur *
+                  Nom de l'auteur *
                 </label>
                 <input
                   type="text"
@@ -5905,7 +5905,7 @@ const Dashboard = () => {
                     })
                   }
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
-                  placeholder="l&apos;unité de la durée du module est l&apos;heure"
+                  placeholder="l'unité de la durée du module est l'heure"
                 />
               </div>
               <div>
@@ -6020,7 +6020,7 @@ const Dashboard = () => {
                   Créer une nouvelle filière
                 </h2>
                 <p className="text-sm text-gray-600 mt-1">
-                  Ajoutez une spécialité d&apos;enseignement
+                  Ajoutez une spécialité d'enseignement
                 </p>
               </div>
               <button
@@ -6325,7 +6325,7 @@ const Dashboard = () => {
           </div>
         </div>
       )}
-      {/* Modal d&apos;édition de cours */}
+      {/* Modal d'édition de cours */}
       {showEditCourseForm && editingCourse && (
         <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
           <div className="bg-white rounded-md shadow-xl w-full max-w-2xl max-h-screen overflow-y-auto">
@@ -6596,7 +6596,7 @@ const Dashboard = () => {
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Ordre d&apos;affichage
+                    Ordre d'affichage
                   </label>
                   <input
                     type="number"
@@ -6916,7 +6916,7 @@ const Dashboard = () => {
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Ordre d&apos;affichage
+                    Ordre d'affichage
                   </label>
                   <input
                     type="number"
@@ -7143,11 +7143,11 @@ const Dashboard = () => {
 
             <div className="p-6">
               {!exerciseType ? (
-                /* Sélection du type d&apos;exercice */
+                /* Sélection du type d'exercice */
                 <div className="space-y-6">
                   <div className="text-center">
                     <h3 className="text-lg font-medium text-gray-900 mb-2">
-                      Quel type d&apos;exercice souhaitez-vous créer ?
+                      Quel type d'exercice souhaitez-vous créer ?
                     </h3>
                     <p className="text-gray-600 text-sm">
                       Choisissez le format qui convient le mieux à votre contenu
@@ -7215,7 +7215,7 @@ const Dashboard = () => {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Nom de l&apos;exercice *
+                        Nom de l'exercice *
                       </label>
                       <input
                         type="text"
@@ -7294,7 +7294,7 @@ const Dashboard = () => {
                   {exerciseType === "pdf" && (
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Fichier PDF de l&apos;exercice *
+                        Fichier PDF de l'exercice *
                       </label>
                       <input
                         type="file"
@@ -7588,7 +7588,7 @@ const Dashboard = () => {
                     ) : (
                       <>
                         <Plus size={16} />
-                        Créer l&apos;exercice
+                        Créer l'exercice
                       </>
                     )}
                   </button>
@@ -7604,7 +7604,7 @@ const Dashboard = () => {
             <div className="flex items-center justify-between p-6 border-b border-gray-200">
               <div>
                 <h2 className="text-xl font-semibold text-gray-900">
-                  Modifier l&apos;exercice {editingExercise.type?.toUpperCase()}
+                  Modifier l'exercice {editingExercise.type?.toUpperCase()}
                 </h2>
                 <p className="text-sm text-gray-600 mt-1">
                   Exercice: {editingExercise.nom}
@@ -7635,7 +7635,7 @@ const Dashboard = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Nom de l&apos;exercice *
+                      Nom de l'exercice *
                     </label>
                     <input
                       type="text"
@@ -7714,7 +7714,7 @@ const Dashboard = () => {
                 {editingExercise.type === "pdf" && (
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Fichier PDF de l&apos;exercice
+                      Fichier PDF de l'exercice
                     </label>
 
                     {editingExercise.pdf_url && (
@@ -8140,7 +8140,7 @@ const Dashboard = () => {
                 ) : (
                   <>
                     <Pencil size={16} />
-                    Modifier l&apos;exercice
+                    Modifier l'exercice
                   </>
                 )}
               </button>
@@ -8475,7 +8475,7 @@ const Dashboard = () => {
                               },
                               {
                                 key: "niveauEtude",
-                                label: "Niveau d&apos;étude",
+                                label: "Niveau d'étude",
                                 type: "select",
                               },
                               {
@@ -8487,7 +8487,7 @@ const Dashboard = () => {
                               { key: "region", label: "Région", type: "text" },
                               {
                                 key: "paysOrigine",
-                                label: "Pays d&apos;origine",
+                                label: "Pays d'origine",
                                 type: "text",
                               },
                               {
@@ -8507,12 +8507,12 @@ const Dashboard = () => {
                               },
                               {
                                 key: "contactUrgence",
-                                label: "Contact d&apos;urgence",
+                                label: "Contact d'urgence",
                                 type: "tel",
                               },
                               {
                                 key: "nomContactUrgence",
-                                label: "Nom contact d&apos;urgence",
+                                label: "Nom contact d'urgence",
                                 type: "text",
                               },
                               {
@@ -8522,7 +8522,7 @@ const Dashboard = () => {
                               },
                               {
                                 key: "anneeEtude",
-                                label: "Année d&apos;étude",
+                                label: "Année d'étude",
                                 type: "select",
                               },
                             ].map((field) => (
@@ -8633,7 +8633,7 @@ const Dashboard = () => {
                             {selectedOptionalFields.includes("niveauEtude") && (
                               <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                                  Niveau d&apos;étude
+                                  Niveau d'étude
                                 </label>
                                 <select
                                   value={studentForm.niveauEtude}
@@ -8663,7 +8663,7 @@ const Dashboard = () => {
                             {selectedOptionalFields.includes("anneeEtude") && (
                               <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                                  Année d&apos;étude
+                                  Année d'étude
                                 </label>
                                 <select
                                   value={studentForm.anneeEtude}
@@ -8732,13 +8732,13 @@ const Dashboard = () => {
                                       {field === "ville" && "Ville"}
                                       {field === "region" && "Région"}
                                       {field === "paysOrigine" &&
-                                        "Pays d&apos;origine"}
+                                        "Pays d'origine"}
                                       {field === "profession" && "Profession"}
                                       {field === "employeur" && "Employeur"}
                                       {field === "specialite" &&
                                         "Spécialité/Filière"}
                                       {field === "nomContactUrgence" &&
-                                        "Nom contact d&apos;urgence"}
+                                        "Nom contact d'urgence"}
                                     </label>
                                     <input
                                       type="text"
@@ -8806,7 +8806,7 @@ const Dashboard = () => {
               )}
             </div>
 
-            {/* Boutons d&apos;action */}
+            {/* Boutons d'action */}
             <div className="flex justify-end gap-3 p-6 border-t border-gray-200">
               <button
                 onClick={() => setShowStudentForm(false)}
@@ -8836,7 +8836,7 @@ const Dashboard = () => {
                   <>
                     {studentFormTab === "excel"
                       ? "Importer"
-                      : "Ajouter l&apos;étudiant"}
+                      : "Ajouter l'étudiant"}
                   </>
                 )}
               </button>
