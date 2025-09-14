@@ -133,9 +133,9 @@ const LMSLogin = () => {
   const handleShowPassword = () => setShowpassword(!showpassword);
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
+    <div className="min-h-screen flex items-center justify-center px-4">
       <div className="w-full max-w-md">
-        <div className="bg-white px-8 py-10 border border-gray-200">
+        <div className="bg-white px-8 py-10">
           
           {/* Header */}
           <div className="text-center mb-8">
@@ -160,7 +160,7 @@ const LMSLogin = () => {
             {/* Email */}
             <div>
               <label htmlFor="email" className="block text-base font-medium text-black mb-2">
-                Adresse email *
+                Adresse email de l'école *
               </label>
               <input
                 type="email"
@@ -168,8 +168,8 @@ const LMSLogin = () => {
                 name="email"
                 value={formData.email}
                 onChange={handleInputChange}
-                className={`w-full px-4 py-4 text-base border ${errors.email ? 'border-red-500' : 'border-gray-300'} bg-white text-black`}
-                placeholder="votre.email@ecole.fr"
+                className={`w-full rounded-md px-4 py-4 text-base border ${errors.email ? 'border-red-500' : 'border-gray-300'} bg-white text-black`}
+                placeholder="votre.email@ecole.com"
                 disabled={isSubmitting}
               />
               {errors.email && <p className="mt-1 text-base text-red-500">{errors.email}</p>}
@@ -186,19 +186,19 @@ const LMSLogin = () => {
                 name="motDePasse"
                 value={formData.motDePasse}
                 onChange={handleInputChange}
-                className={`w-full px-4 py-4 text-base border ${errors.motDePasse ? 'border-red-500' : 'border-gray-300'} bg-white text-black`}
+                className={`w-full rounded-md px-4 py-4 text-base border ${errors.motDePasse ? 'border-red-500' : 'border-gray-300'} bg-white text-black`}
                 placeholder="••••••••"
                 disabled={isSubmitting}
               />
               {errors.motDePasse && <p className="mt-1 text-base text-red-500">{errors.motDePasse}</p>}
-              <button type="button" className="text-sm underline py-3 cursor-pointer" onClick={handleShowPassword}>
+              <button type="button" className="text-sm text-gray-900 underline py-3 cursor-pointer" onClick={handleShowPassword}>
                 {showpassword ? "Afficher le mot de passe" : "Masquer le mot de passe"}
               </button>
             </div>
 
             {/* Forgot Password */}
             <div className="text-right">
-              <button type="button" onClick={handleForgotPasswordClick} className="text-base text-black underline">
+              <button type="button" onClick={handleForgotPasswordClick} className="text-sm text-black underline">
                 Mot de passe oublié ?
               </button>
             </div>
@@ -208,7 +208,7 @@ const LMSLogin = () => {
               type="button"
               disabled={isSubmitting}
               onClick={handleSubmit}
-              className="w-full bg-blue-600 text-white py-4 px-4 hover:bg-blue-700 transition-colors font-medium text-base disabled:opacity-50 cursor-pointer"
+              className="rounded-md w-full bg-blue-600 text-white py-4 px-4 hover:bg-blue-700 transition-colors font-medium text-base disabled:opacity-50 cursor-pointer"
             >
               {isSubmitting ? 'Connexion...' : 'Se connecter'}
             </button>
@@ -222,11 +222,6 @@ const LMSLogin = () => {
                 S'inscrire
               </button>
             </p>
-          </div>
-
-          {/* Footer */}
-          <div className="mt-8 text-center">
-            <p className="text-sm text-gray-500">En vous connectant, vous acceptez nos conditions d'utilisation</p>
           </div>
         </div>
       </div>
