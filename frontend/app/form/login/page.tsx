@@ -133,33 +133,33 @@ const LMSLogin = () => {
   const handleShowPassword = () => setShowpassword(!showpassword);
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4">
-      <div className="w-full max-w-md">
-        <div className="bg-white px-8 py-10">
+    <div className="min-h-screen bg-white flex items-center justify-center px-4 sm:px-6 md:px-8">
+      <div className="w-full max-w-md sm:max-w-lg">
+        <div className="bg-white px-6 py-8 sm:px-8 sm:py-10">
           
           {/* Header */}
-          <div className="text-center mb-8">
+          <div className="text-center mb-6 sm:mb-8">
             <div className="w-12 h-12 bg-blue-600 text-white flex items-center justify-center text-2xl font-bold mx-auto mb-4">E</div>
-            <h1 className="text-2xl font-semibold text-gray-900 mb-2">Connexion</h1>
-            <p className="text-gray-600">Accédez à votre plateforme éducative</p>
+            <h1 className="text-xl sm:text-2xl font-semibold text-gray-900 mb-2">Connexion</h1>
+            <p className="text-sm sm:text-base text-gray-600">Accédez à votre plateforme éducative</p>
           </div>
 
           {/* Message API */}
           {apiMessage && (
-            <div className={`mb-6 p-4 border ${
+            <div className={`mb-6 p-3 sm:p-4 border ${
               apiMessage.includes('réussie') 
                 ? 'border-green-500 bg-green-50 text-green-700' 
                 : 'border-red-500 bg-red-50 text-red-700'
             }`}>
-              <p className="text-base">{apiMessage}</p>
+              <p className="text-sm sm:text-base">{apiMessage}</p>
             </div>
           )}
 
           {/* Form */}
-          <div className="space-y-6">
+          <div className="space-y-4 sm:space-y-6">
             {/* Email */}
             <div>
-              <label htmlFor="email" className="block text-base font-medium text-black mb-2">
+              <label htmlFor="email" className="block text-sm sm:text-base font-medium text-black mb-2">
                 Adresse email de l'école *
               </label>
               <input
@@ -168,16 +168,16 @@ const LMSLogin = () => {
                 name="email"
                 value={formData.email}
                 onChange={handleInputChange}
-                className={`w-full rounded-md px-4 py-4 text-base border ${errors.email ? 'border-red-500' : 'border-gray-300'} bg-white text-black`}
+                className={`w-full rounded-md px-3 py-3 sm:px-4 sm:py-4 text-sm sm:text-base border ${errors.email ? 'border-red-500' : 'border-gray-300'} bg-white text-black`}
                 placeholder="votre.email@ecole.com"
                 disabled={isSubmitting}
               />
-              {errors.email && <p className="mt-1 text-base text-red-500">{errors.email}</p>}
+              {errors.email && <p className="mt-1 text-sm text-red-500">{errors.email}</p>}
             </div>
 
             {/* Mot de passe */}
             <div>
-              <label htmlFor="motDePasse" className="block text-base font-medium text-black mb-2">
+              <label htmlFor="motDePasse" className="block text-sm sm:text-base font-medium text-black mb-2">
                 Mot de passe *
               </label>
               <input
@@ -186,19 +186,19 @@ const LMSLogin = () => {
                 name="motDePasse"
                 value={formData.motDePasse}
                 onChange={handleInputChange}
-                className={`w-full rounded-md px-4 py-4 text-base border ${errors.motDePasse ? 'border-red-500' : 'border-gray-300'} bg-white text-black`}
+                className={`w-full rounded-md px-3 py-3 sm:px-4 sm:py-4 text-sm sm:text-base border ${errors.motDePasse ? 'border-red-500' : 'border-gray-300'} bg-white text-black`}
                 placeholder="••••••••"
                 disabled={isSubmitting}
               />
-              {errors.motDePasse && <p className="mt-1 text-base text-red-500">{errors.motDePasse}</p>}
-              <button type="button" className="text-sm text-gray-900 underline py-3 cursor-pointer" onClick={handleShowPassword}>
+              {errors.motDePasse && <p className="mt-1 text-sm text-red-500">{errors.motDePasse}</p>}
+              <button type="button" className="text-xs sm:text-sm text-gray-900 underline py-2 sm:py-3 cursor-pointer" onClick={handleShowPassword}>
                 {showpassword ? "Afficher le mot de passe" : "Masquer le mot de passe"}
               </button>
             </div>
 
             {/* Forgot Password */}
             <div className="text-right">
-              <button type="button" onClick={handleForgotPasswordClick} className="text-sm text-black underline">
+              <button type="button" onClick={handleForgotPasswordClick} className="text-xs sm:text-sm text-black underline">
                 Mot de passe oublié ?
               </button>
             </div>
@@ -208,15 +208,15 @@ const LMSLogin = () => {
               type="button"
               disabled={isSubmitting}
               onClick={handleSubmit}
-              className="rounded-md w-full bg-blue-600 text-white py-4 px-4 hover:bg-blue-700 transition-colors font-medium text-base disabled:opacity-50 cursor-pointer"
+              className="rounded-md w-full bg-blue-600 text-white py-3 sm:py-4 px-4 hover:bg-blue-700 transition-colors font-medium text-sm sm:text-base disabled:opacity-50 cursor-pointer"
             >
               {isSubmitting ? 'Connexion...' : 'Se connecter'}
             </button>
           </div>
 
           {/* Sign Up */}
-          <div className="mt-6 text-center">
-            <p className="text-base text-gray-600">
+          <div className="mt-4 sm:mt-6 text-center">
+            <p className="text-sm sm:text-base text-gray-600">
               Pas encore de compte ?{' '}
               <button type="button" onClick={handleSignUpClick} className="text-black underline font-medium">
                 S'inscrire
