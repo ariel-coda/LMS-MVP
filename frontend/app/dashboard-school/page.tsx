@@ -716,7 +716,7 @@ const Dashboard = () => {
         ])
         .select()
         .single();
-                  console.log(process.env.NEXT_PUBLIC_SUPABASE_URL)
+      console.log(process.env.NEXT_PUBLIC_SUPABASE_URL);
 
       if (error) {
         if (error.code === "23505") {
@@ -5764,6 +5764,21 @@ const Dashboard = () => {
                         <input
                           type="checkbox"
                           checked={moduleForm.filières.includes(filiere.nom)}
+                          onChange={(e) => {
+                            if (e.target.checked) {
+                              setModuleForm({
+                                ...moduleForm,
+                                filières: [...moduleForm.filières, filiere.nom],
+                              });
+                            } else {
+                              setModuleForm({
+                                ...moduleForm,
+                                filières: moduleForm.filières.filter(
+                                  (f) => f !== filiere.nom
+                                ),
+                              });
+                            }
+                          }}
                           className="w-4 h-4 text-indigo-600 border-slate-300 rounded focus:ring-indigo-500"
                         />
                         <span className="text-sm text-slate-700">
