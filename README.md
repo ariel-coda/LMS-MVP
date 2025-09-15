@@ -1,2 +1,2 @@
-# LMS-MVP
-LMS-MVP est une plateforme numérique qui aide les écoles à gérer facilement leurs cours, leurs étudiants et leurs évaluations au même endroit.
+# FastLMS
+FastLMS est une plateforme de gestion pédagogique qui permet aux écoles de centraliser l’ensemble de leurs données académiques, tout en automatisant les tâches les plus répétitives.
