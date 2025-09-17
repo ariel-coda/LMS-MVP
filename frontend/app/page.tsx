@@ -1,5 +1,5 @@
 "use client"
-
+import { SpeedInsights } from "@vercel/speed-insights/next"
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 

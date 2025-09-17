@@ -55,35 +55,40 @@ interface User {
 }
 
 interface Student {
-  id: string;
+  id?: string | null; // Généré par la BDD
   nom: string;
   prenom: string;
-  matricule: string;
-  filieres: string;
-  nomComplet: string;
+  matricule?: string;
+  filiere?: string; // tu le maps depuis "specialite" ou "filiere" Excel
+  nom_complet: string;
   email: string;
   telephone: string;
   sexe: string;
-  dateNaissance: string;
-  cni: File | null;
-  diplome: File | null;
-  photo?: File | null; // Champ optionnel
-  niveauEtude: string;
-  adresse: string;
-  status: string;
-  ville: string;
-  region?: string; // Nouveau champ optionnel
-  paysOrigine: string;
-  profession: string;
-  employeur?: string; // Nouveau champ optionnel
-  situationMatrimoniale: string;
-  contactUrgence: string;
-  progression_moyenne?: number; // Pour le tri par progression
-  nomContactUrgence?: string; // Nouveau champ optionnel
-  specialite?: string; // Nouveau champ optionnel
-  anneeEtude?: string; // Nouveau champ optionnel
-  created_at?: string; // Pour le tri par date de création
+  date_naissance: string; // format ISO: YYYY-MM-DD
+  firebase_uid: string; // lié à l'utilisateur connecté
+
+  // Champs optionnels
+  diplome?: string;
+  cni?: string; // URL du fichier CNI
+  adresse?: string;
+  ville?: string;
+  region?: string;
+  pays_origine?: string;
+  profession?: string;
+  employeur?: string;
+  niveau_etude?: string;
+  situation_matrimoniale?: string;
+  contact_urgence?: string;
+  nom_contact_urgence?: string;
+  specialite?: string;
+  annee_etude?: string;
+  progression_moyenne?: number;
+  created_at?: string; // ISO string
+  nomComplet?: string; // Pour l'affichage (nom + prénom)
+  status?: "actif" | "inactif"; // Statut de l'étudiant
+  photo?: string; // URL de la photo
 }
+
 
 interface Course {
   id: string;
@@ -327,30 +332,30 @@ const Dashboard = () => {
   const [studentForm, setStudentForm] = useState<Student>({
     id: "",
     nom: "",
-    filieres: "",
+    filiere: "",
     prenom: "",
     matricule: "",
-    nomComplet: "",
+    nom_complet: "", // ✅ Ajouté - champ obligatoire
+    firebase_uid: "",
     email: "",
     telephone: "",
     sexe: "",
-    dateNaissance: "",
-    cni: null,
-    diplome: null,
-    photo: null, // Ajouté
-    niveauEtude: "",
+    date_naissance: "",
+    cni: "",
+    diplome: "",
+    photo: "", // Ajouté
+    niveau_etude: "",
     adresse: "",
     ville: "",
-    status: "",
+    status: "actif", // Par défaut "actif"
     region: "", // Ajouté
-    paysOrigine: "",
+    pays_origine: "",
     profession: "",
     employeur: "", // Ajouté
-    situationMatrimoniale: "",
-    contactUrgence: "",
-    nomContactUrgence: "", // Ajouté
+    situation_matrimoniale: "",
+    contact_urgence: "",
     specialite: "", // Ajouté
-    anneeEtude: "", // Ajouté
+    annee_etude: "", // Ajouté
   });
   const [students, setStudents] = useState<Student[]>([]);
   const [loadingStudents, setLoadingStudents] = useState(false);
@@ -1019,6 +1024,7 @@ const Dashboard = () => {
         "téléphone",
         "sexe",
         "date de naissance",
+        "filière",
       ];
       const missingColumns = requiredColumns.filter(
         (col) =>
@@ -1057,6 +1063,7 @@ const Dashboard = () => {
         sexe: getColumnIndex(["sexe", "genre", "gender", "sex"]),
         dateNaissance: getColumnIndex([
           "date de naissance",
+          "age",
           "naissance",
           "birth",
           "birthday",
@@ -1421,7 +1428,7 @@ const Dashboard = () => {
     // Filtrage par filière
     if (filterByFiliere) {
       filtered = filtered.filter((student) =>
-        student.filieres?.includes(filterByFiliere)
+        student.filiere?.includes(filterByFiliere)
       );
     }
 
@@ -4993,47 +5000,39 @@ const Dashboard = () => {
             return (
               <div
                 key={student.id}
-                className="bg-white rounded-lg border border-gray-200 p-6 hover:border-blue-200 transition-all"
+                className="bg-white rounded-lg border border-gray-200 p-4 sm:p-6 hover:border-blue-200 transition-all"
               >
-                <div className="flex items-start justify-between">
-                  <div className="flex items-start space-x-4">
+                <div className="flex flex-col sm:flex-row items-start justify-between gap-4">
+                  <div className="flex items-start space-x-3 sm:space-x-4 w-full">
                     {/* Avatar */}
-                    <div className="w-16 h-16 bg-blue-600 text-white rounded-full flex items-center justify-center font-semibold text-lg">
-                      <UserRound className="w-8 h-8" />
+                    <div className="w-12 h-12 sm:w-16 sm:h-16 bg-blue-600 text-white rounded-full flex items-center justify-center font-semibold flex-shrink-0">
+                      <UserRound className="w-6 h-6 sm:w-8 sm:h-8" />
                     </div>
 
-                    <div className="flex-1">
+                    <div className="flex-1 min-w-0">
                       {/* En-tête étudiant */}
-                      <div className="flex items-center gap-3 mb-2">
-                        <h3 className="text-lg font-semibold text-gray-900">
+                      <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3 mb-3">
+                        <h3 className="text-base sm:text-lg font-semibold text-gray-900 truncate">
                           {student.prenom} {student.nom}
                         </h3>
 
-                        {student.matricule && (
-                          <span className="px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded-full font-medium">
-                            {student.matricule}
-                          </span>
-                        )}
-
-                        {/*<span
-                          className={`px-2 py-1 text-xs rounded-full font-medium ${
-                            student.status === "actif"
-                              ? "bg-green-100 text-green-700"
-                              : "bg-gray-100 text-gray-600"
-                          }`}
-                        >
-                          {student.status}
-                        </span> */}
+                        <div className="flex flex-wrap gap-2">
+                          {student.matricule && (
+                            <span className="px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded-full font-medium">
+                              {student.matricule}
+                            </span>
+                          )}
+                        </div>
                       </div>
 
                       {/* Informations remplies */}
-                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 mb-4">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-3 mb-4">
                         {filledFields.slice(0, 6).map((field, index) => (
-                          <div key={index} className="text-sm">
+                          <div key={index} className="text-xs sm:text-sm">
                             <span className="text-gray-500">
                               {field.label}:{" "}
                             </span>
-                            <span className="text-gray-900 font-medium">
+                            <span className="text-gray-900 font-medium break-words">
                               {field.value}
                             </span>
                           </div>
@@ -5041,11 +5040,11 @@ const Dashboard = () => {
                       </div>
 
                       {/* Filières et progression */}
-                      <div className="flex items-center gap-4">
-                        {student.filieres && student.filieres.length > 0 && (
+                      <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
+                        {student.filiere && student.filiere.length > 0 && (
                           <div className="flex flex-wrap gap-1">
-                            {Array.isArray(student.filieres) &&
-                              student.filieres.map(
+                            {Array.isArray(student.filiere) &&
+                              student.filiere.map(
                                 (filiere: string, index: number) => (
                                   <span
                                     key={index}
@@ -5059,32 +5058,19 @@ const Dashboard = () => {
                         )}
 
                         {student.progression_moyenne !== undefined && (
-                          <div className="flex items-center gap-2">
-                            <div className="w-92 bg-gray-200 rounded-full h-2">
+                          <div className="flex items-center gap-2 min-w-0">
+                            <div className="min-w-52 sm:w-24 bg-gray-200 rounded-full h-2 flex-shrink-0">
                               <div
-                                className="bg-blue-600 h-2 rounded-full"
+                                className="bg-blue-600 h-2 rounded-full transition-all duration-300"
                                 style={{
-                                  width: `${student.progression_moyenne}%`,
+                                  width: `${Math.min(
+                                    student.progression_moyenne,
+                                    100
+                                  )}%`,
                                 }}
                               ></div>
                             </div>
-                            <span className="text-sm text-gray-600">
-                              {Math.round(student.progression_moyenne)}%
-                            </span>
-                          </div>
-                        )}
-
-                        {student.progression_moyenne !== undefined && (
-                          <div className="flex items-center gap-2">
-                            <div className="w-92 bg-gray-200 rounded-full h-2">
-                              <div
-                                className="bg-blue-600 h-2 rounded-full"
-                                style={{
-                                  width: `${student.progression_moyenne}%`,
-                                }}
-                              ></div>
-                            </div>
-                            <span className="text-sm text-gray-600">
+                            <span className="text-xs sm:text-sm text-gray-600 flex-shrink-0">
                               {Math.round(student.progression_moyenne)}%
                             </span>
                           </div>
@@ -5094,7 +5080,7 @@ const Dashboard = () => {
                   </div>
 
                   {/* Actions */}
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-1 sm:gap-2 flex-shrink-0 w-full sm:w-auto justify-end">
                     <button
                       onClick={() => {
                         setSelectedStudent(student);
@@ -5103,7 +5089,7 @@ const Dashboard = () => {
                       className="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-md transition-colors"
                       title="Voir les détails"
                     >
-                      <Eye size={16} />
+                      <Eye size={14} className="sm:w-4 sm:h-4" />
                     </button>
 
                     <button
@@ -5114,15 +5100,15 @@ const Dashboard = () => {
                       className="p-2 text-gray-400 hover:text-green-600 hover:bg-green-50 rounded-md transition-colors"
                       title="Modifier"
                     >
-                      <Pencil size={16} />
+                      <Pencil size={14} className="sm:w-4 sm:h-4" />
                     </button>
 
                     <button
-                      onClick={() => handleDeleteStudent(student.id)}
+                      onClick={() => handleDeleteStudent(student.id || "")}
                       className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-md transition-colors"
                       title="Supprimer"
                     >
-                      <Trash2 size={16} />
+                      <Trash2 size={14} className="sm:w-4 sm:h-4" />
                     </button>
                   </div>
                 </div>
@@ -5135,7 +5121,7 @@ const Dashboard = () => {
                         setSelectedStudent(student);
                         setShowStudentDetails(true);
                       }}
-                      className="text-sm text-blue-600 hover:text-blue-700 font-medium"
+                      className="text-xs sm:text-sm text-blue-600 hover:text-blue-700 font-medium"
                     >
                       Voir {filledFields.length - 6} information(s)
                       supplémentaire(s)
@@ -8391,11 +8377,11 @@ const Dashboard = () => {
                         </label>
                         <input
                           type="date"
-                          value={studentForm.dateNaissance}
+                          value={studentForm.date_naissance}
                           onChange={(e) =>
                             setStudentForm({
                               ...studentForm,
-                              dateNaissance: e.target.value,
+                              date_naissance: e.target.value,
                             })
                           }
                           className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
@@ -8596,7 +8582,7 @@ const Dashboard = () => {
                                     if (file) {
                                       setStudentForm({
                                         ...studentForm,
-                                        cni: file,
+                                        cni: file.name,
                                       });
                                     }
                                   }}
@@ -8618,7 +8604,7 @@ const Dashboard = () => {
                                     if (file) {
                                       setStudentForm({
                                         ...studentForm,
-                                        diplome: file,
+                                        diplome: file.name,
                                       });
                                     }
                                   }}
@@ -8640,7 +8626,7 @@ const Dashboard = () => {
                                     if (file) {
                                       setStudentForm({
                                         ...studentForm,
-                                        photo: file,
+                                        photo: file.name ,
                                       });
                                     }
                                   }}
@@ -8656,11 +8642,11 @@ const Dashboard = () => {
                                   Niveau d'étude
                                 </label>
                                 <select
-                                  value={studentForm.niveauEtude}
+                                  value={studentForm.niveau_etude}
                                   onChange={(e) =>
                                     setStudentForm({
                                       ...studentForm,
-                                      niveauEtude: e.target.value,
+                                      niveau_etude: e.target.value,
                                     })
                                   }
                                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
@@ -8686,11 +8672,11 @@ const Dashboard = () => {
                                   Année d'étude
                                 </label>
                                 <select
-                                  value={studentForm.anneeEtude}
+                                  value={studentForm.annee_etude}
                                   onChange={(e) =>
                                     setStudentForm({
                                       ...studentForm,
-                                      anneeEtude: e.target.value,
+                                      annee_etude: e.target.value,
                                     })
                                   }
                                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
@@ -8713,11 +8699,11 @@ const Dashboard = () => {
                                   Situation matrimoniale
                                 </label>
                                 <select
-                                  value={studentForm.situationMatrimoniale}
+                                  value={studentForm.situation_matrimoniale}
                                   onChange={(e) =>
                                     setStudentForm({
                                       ...studentForm,
-                                      situationMatrimoniale: e.target.value,
+                                      situation_matrimoniale: e.target.value,
                                     })
                                   }
                                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
@@ -8805,11 +8791,11 @@ const Dashboard = () => {
                                 </label>
                                 <input
                                   type="tel"
-                                  value={studentForm.contactUrgence}
+                                  value={studentForm.contact_urgence}
                                   onChange={(e) =>
                                     setStudentForm({
                                       ...studentForm,
-                                      contactUrgence: e.target.value,
+                                      contact_urgence: e.target.value,
                                     })
                                   }
                                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
