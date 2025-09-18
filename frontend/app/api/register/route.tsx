@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { db } from '@/app/lib/firebaseConfig';
-import { collection, addDoc, query, where, getDocs } from 'firebase/firestore';
+import { adminDb } from '@/app/lib/firebase/firebaseAdmin'; // Admin SDK corrigé
 import bcrypt from 'bcryptjs';
 
 interface RegisterData {
@@ -70,13 +69,19 @@ const validateFormData = (data: RegisterData): { isValid: boolean; errors: strin
   };
 };
 
-// Fonction pour vérifier si l'email existe déjà
+// ✅ Fonction corrigée avec Admin SDK
 const checkEmailExists = async (email: string): Promise<boolean> => {
   try {
-    const usersRef = collection(db, 'usersTrial');
-    const q = query(usersRef, where('email', '==', email.toLowerCase()));
-    const querySnapshot = await getDocs(q);
-    return !querySnapshot.empty;
+    console.log('Vérification email:', email);
+    
+    // Utiliser Admin SDK pour la requête
+    const usersRef = adminDb.collection('usersTrial');
+    const querySnapshot = await usersRef.where('email', '==', email.toLowerCase()).get();
+    
+    const exists = !querySnapshot.empty;
+    console.log('Email existe déjà:', exists);
+    
+    return exists;
   } catch (error) {
     console.error('Erreur lors de la vérification de l\'email:', error);
     throw new Error('Erreur lors de la vérification de l\'email');
@@ -85,12 +90,16 @@ const checkEmailExists = async (email: string): Promise<boolean> => {
 
 export async function POST(request: NextRequest) {
   try {
+    console.log('🎯 Tentative d\'inscription...');
+    
     // Parse des données du formulaire
     const body: RegisterData = await request.json();
+    console.log('Données reçues:', { email: body.email, nom: body.nom });
 
     // Validation des données
     const validation = validateFormData(body);
     if (!validation.isValid) {
+      console.log('❌ Validation échouée:', validation.errors);
       return NextResponse.json(
         { 
           success: false, 
@@ -103,10 +112,12 @@ export async function POST(request: NextRequest) {
 
     // Normaliser l'email
     const normalizedEmail = body.email.toLowerCase().trim();
+    console.log('Email normalisé:', normalizedEmail);
 
     // Vérifier si l'email existe déjà
     const emailExists = await checkEmailExists(normalizedEmail);
     if (emailExists) {
+      console.log('❌ Email existe déjà');
       return NextResponse.json(
         { 
           success: false, 
@@ -116,7 +127,10 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    console.log('✅ Email disponible');
+
     // Chiffrer le mot de passe
+    console.log('🔐 Chiffrement du mot de passe...');
     const saltRounds = 12;
     const hashedPassword = await bcrypt.hash(body.motDePasse, saltRounds);
 
@@ -134,11 +148,13 @@ export async function POST(request: NextRequest) {
       active: true
     };
 
-    // Ajouter l'utilisateur à Firestore
-    const usersRef = collection(db, 'usersTrial');
-    const docRef = await addDoc(usersRef, userData);
+    console.log('💾 Sauvegarde en cours...');
+    
+    // ✅ Ajouter l'utilisateur à Firestore avec Admin SDK
+    const usersRef = adminDb.collection('usersTrial');
+    const docRef = await usersRef.add(userData);
 
-    console.log('Nouvel utilisateur créé avec l\'ID:', docRef.id);
+    console.log('🎉 Nouvel utilisateur créé avec l\'ID:', docRef.id);
 
     // Réponse de succès
     return NextResponse.json({
@@ -149,7 +165,11 @@ export async function POST(request: NextRequest) {
     }, { status: 201 });
 
   } catch (error) {
-    console.error('Erreur lors de l\'inscription:', error);
+    console.error('💥 Erreur lors de l\'inscription:', {
+      error: error,
+      message: (error as any)?.message,
+      stack: (error as any)?.stack
+    });
     
     return NextResponse.json(
       { 

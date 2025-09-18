@@ -65,6 +65,10 @@ p{
   font-size: 14px;
 }
 
+input, textarea, select{
+  color: #000d49 !important;
+}
+
 /* Style des balises a */
 a:hover{
   transition: .1s;

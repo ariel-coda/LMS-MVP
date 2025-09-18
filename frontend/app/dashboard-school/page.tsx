@@ -55,7 +55,7 @@ interface User {
 }
 
 interface Student {
-  id?: string | null; // Généré par la BDD
+  id?: string; // Généré par la BDD
   nom: string;
   prenom: string;
   matricule?: string;
@@ -85,7 +85,7 @@ interface Student {
   progression_moyenne?: number;
   created_at?: string; // ISO string
   nomComplet?: string; // Pour l'affichage (nom + prénom)
-  status?: "actif" | "inactif"; // Statut de l'étudiant
+  statut?: "actif" | "inactif"; // Statut de l'étudiant
   photo?: string; // URL de la photo
 }
 
@@ -347,7 +347,7 @@ const Dashboard = () => {
     niveau_etude: "",
     adresse: "",
     ville: "",
-    status: "actif", // Par défaut "actif"
+    statut: "actif", // Par défaut "actif"
     region: "", // Ajouté
     pays_origine: "",
     profession: "",
@@ -1486,7 +1486,7 @@ const Dashboard = () => {
     const fields: { label: string; value: string }[] = [];
 
     const fieldMapping = {
-      matricule: "Matricule",
+      filieres: "Filières",
       email: "Email",
       telephone: "Téléphone",
       sexe: "Sexe",
@@ -1498,7 +1498,6 @@ const Dashboard = () => {
       profession: "Profession",
       niveau_etude: "Niveau d'étude",
       specialite: "Spécialité",
-      filieres: "Filières",
       annee_etude: "Année d'étude",
       situation_matrimoniale: "Situation matrimoniale",
       contact_urgence: "Contact d'urgence",
@@ -2574,23 +2573,98 @@ const Dashboard = () => {
   const renderCoursesContent = () => (
     <div className="space-y-6">
       {/* Header section */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-          <h1 className="text-2xl font-bold text-gray-900">
-            Cours disponibles
-          </h1>
-          <p className="text-gray-600 mt-1">
-            Gérez vos contenus pédagogiques et leurs sections
-          </p>
+<div className="bg-white border-b border-gray-100">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Header principal */}
+        <div className="py-6 lg:py-8">
+          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between space-y-4 lg:space-y-0">
+            
+            {/* Section titre - Responsive */}
+            <div className="flex-1 min-w-0">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:space-x-4">
+                <h1 className="text-xl sm:text-2xl lg:text-3xl font-semibold text-gray-900 tracking-tight">
+                  Cours disponibles
+                </h1>
+                <div className="mt-1 sm:mt-0">
+                  <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-50 text-blue-700 border border-blue-200">
+                    {courses.length} cours actifs
+                  </span>
+                </div>
+              </div>
+              
+              <p className="mt-2 text-sm sm:text-base text-gray-600 max-w-2xl">
+                Gérez vos contenus pédagogiques, sections et ressources d'apprentissage
+              </p>
+            </div>
+
+            {/* Actions - Responsive */}
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center space-y-3 sm:space-y-0 sm:space-x-3 lg:flex-shrink-0">
+              
+
+              {/* Bouton principal */}
+              <button
+                onClick={() => setShowCourseForm(true)}
+                className="inline-flex items-center justify-center px-4 sm:px-6 py-2.5 sm:py-3 text-sm sm:text-base font-medium text-white bg-blue-600 border border-transparent rounded-lg shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200 hover:shadow-md"
+              >
+                <Plus className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
+                <span className="whitespace-nowrap">Nouveau cours</span>
+              </button>
+            </div>
+          </div>
         </div>
-        <button
-          onClick={() => setShowCourseForm(true)}
-          className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2.5 rounded-md font-medium transition-colors flex items-center gap-2 self-start sm:self-auto"
-        >
-          <Plus size={18} />
-          Nouveau cours
-        </button>
+
+        {/* Barre de navigation/filtres - Mobile friendly */}
+        <div className="border-t border-gray-100 py-4">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-4 sm:space-y-0">
+            
+            {/* Filtres/Tabs */}
+            <nav className="flex space-x-1 bg-gray-100 rounded-lg p-1" aria-label="Tabs">
+              {['Tous', 'Actifs', 'Brouillons'].map((tab, index) => (
+                <button
+                  key={tab}
+                  className={`px-3 py-2 text-sm font-medium rounded-md transition-colors duration-200 ${
+                    index === 0
+                      ? 'bg-white text-gray-900 shadow-sm'
+                      : 'text-gray-600 hover:text-gray-900 hover:bg-white/50'
+                  }`}
+                >
+                  {tab}
+                  {index === 0 && (
+                    <span className="ml-2 inline-flex items-center px-1.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-600">
+                      {courses.length}
+                    </span>
+                  )}
+                </button>
+              ))}
+            </nav>
+
+            {/* Actions secondaires */}
+            <div className="flex items-center space-x-3">
+              {/* Recherche mobile-friendly */}
+              <div className="relative">
+                <input
+                  type="text"
+                  placeholder="Rechercher..."
+                  className="w-full sm:w-64 pl-3 pr-10 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white"
+                />
+                <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                  <svg className="h-4 w-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                  </svg>
+                </div>
+              </div>
+
+              {/* Menu options - Visible sur mobile avec icône */}
+              <button className="lg:hidden p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-colors">
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
+    </div>
       {courses.length === 0 ? (
         /* État vide */
         <div className="text-center py-12">
@@ -2662,8 +2736,8 @@ const Dashboard = () => {
                   </div>
 
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 bg-purple-50 rounded-full flex items-center justify-center">
-                      <Users size={18} className="text-purple-600" />
+                    <div className="w-10 h-10 bg-blue-50 rounded-full flex items-center justify-center">
+                      <Users size={18} className="text-blue-600" />
                     </div>
                     <div>
                       <p className="text-xs text-gray-500">Auteur</p>
@@ -2674,8 +2748,8 @@ const Dashboard = () => {
                   </div>
 
                   <div className="flex items-center gap-3 col-span-2 sm:col-span-1">
-                    <div className="w-10 h-10 bg-green-50 rounded-full flex items-center justify-center">
-                      <Calendar size={18} className="text-green-600" />
+                    <div className="w-10 h-10 bg-blue-50 rounded-full flex items-center justify-center">
+                      <Calendar size={18} className="text-blue-600" />
                     </div>
                     <div>
                       <p className="text-xs text-gray-500">Créé le</p>
@@ -2686,8 +2760,8 @@ const Dashboard = () => {
                   </div>
 
                   <div className="flex items-center gap-3 col-span-2 sm:col-span-1">
-                    <div className="w-10 h-10 bg-orange-50 rounded-full flex items-center justify-center">
-                      <FileText size={18} className="text-orange-600" />
+                    <div className="w-10 h-10 bg-blue-50 rounded-full flex items-center justify-center">
+                      <FileText size={18} className="text-blue-600" />
                     </div>
                     <div>
                       <p className="text-xs text-gray-500">Contenu</p>
@@ -2705,7 +2779,7 @@ const Dashboard = () => {
                     className="flex-1 bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white px-6 py-3 rounded-lg font-medium transition-all duration-200 flex items-center justify-center gap-3"
                     onClick={() => handleConsulterSection(course)}
                   >
-                    <FileText size={20} />
+                    <BookOpen size={20} />
                     <span>Consulter le cours</span>
                     {courseSectionCounts[course.id] > 0 && (
                       <span className="bg-white bg-opacity-20 px-2 py-1 rounded-md text-sm font-semibold">
@@ -2718,7 +2792,7 @@ const Dashboard = () => {
                   <div className="flex gap-2">
                     <button
                       onClick={() => handleEditCourse(course)}
-                      className="px-4 py-3 bg-gray-50 hover:bg-gray-100 text-gray-700 hover:text-gray-900 rounded-lg font-medium transition-all duration-200 flex items-center justify-center gap-2 border border-gray-200 hover:border-gray-300"
+                      className="px-4 py-3 bg-green-50 hover:bg-green-100 text-green-700 hover:text-green-900 rounded-lg font-medium transition-all duration-200 flex items-center justify-center gap-2 border border-green-200 hover:border-green-300"
                       title="Modifier le cours"
                     >
                       <Pencil size={18} />
@@ -4880,9 +4954,9 @@ const Dashboard = () => {
               onChange={(e) => setSortBy(e.target.value as any)}
               className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             >
-              <option value="nom">Nom</option>
-              <option value="date_creation">Date d'inscription</option>
-              <option value="progression">Performance</option>
+              <option value="nom">Trier par nom A-Z</option>
+              <option value="date_creation">Trier par date d'inscription</option>
+              <option value="progression">Trier par performance</option>
             </select>
 
             <button
@@ -4918,7 +4992,7 @@ const Dashboard = () => {
             <div>
               <p className="text-sm text-gray-600">Étudiants actifs</p>
               <p className="text-2xl font-bold text-gray-900">
-                {students.filter((s) => s.status === "actif").length}
+                {students.filter((s) => s.statut === "actif").length}
               </p>
             </div>
             <CheckCircle className="w-8 h-8 text-green-500" />
@@ -5027,7 +5101,7 @@ const Dashboard = () => {
 
                       {/* Informations remplies */}
                       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-3 mb-4">
-                        {filledFields.slice(0, 6).map((field, index) => (
+                        {filledFields.slice(0, 14).map((field, index) => (
                           <div key={index} className="text-xs sm:text-sm">
                             <span className="text-gray-500">
                               {field.label}:{" "}
@@ -5113,7 +5187,7 @@ const Dashboard = () => {
                   </div>
                 </div>
 
-                {/* Informations supplémentaires si plus de 6 champs */}
+                {/* Informations supplémentaires si plus de 6 champs 
                 {filledFields.length > 6 && (
                   <div className="mt-4 pt-4 border-t border-gray-100">
                     <button
@@ -5123,11 +5197,11 @@ const Dashboard = () => {
                       }}
                       className="text-xs sm:text-sm text-blue-600 hover:text-blue-700 font-medium"
                     >
-                      Voir {filledFields.length - 6} information(s)
+                      Voir {filledFields.length - 7} information(s)
                       supplémentaire(s)
                     </button>
                   </div>
-                )}
+                )}*/}
               </div>
             );
           })}
@@ -8242,19 +8316,19 @@ const Dashboard = () => {
                     )}
                   </div>
 
-                  <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                  <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
                     <div className="flex items-start">
                       <Info
                         size={16}
-                        className="text-blue-600 mt-0.5 mr-2 flex-shrink-0"
+                        className="text-yellow-600 mt-0.5 mr-2 flex-shrink-0"
                       />
                       <div>
-                        <h4 className="text-sm font-medium text-blue-900 mb-1">
+                        <h4 className="text-sm font-medium text-yellow-900 mb-1">
                           Format Excel requis
                         </h4>
-                        <p className="text-sm text-blue-700">
+                        <p className="text-sm text-yellow-700">
                           Colonnes requises : Nom, Prénom, Email, Téléphone,
-                          Sexe, Date de naissance. Colonnes optionnelles :
+                          Sexe, Date de naissance, filière. <br/> Colonnes optionnelles :
                           Matricule, Nom complet, Adresse, Ville, etc.
                         </p>
                       </div>
