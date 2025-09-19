@@ -14,7 +14,6 @@ import {
   Menu,
   X,
 } from "lucide-react";
-import Image from "next/image";
 
 interface Feature {
   icon: React.ReactNode;
@@ -223,11 +222,9 @@ export default function LandingPage(): JSX.Element {
             </div>
 
             <div className="mt-12 sm:display-none md:display-none">
-              <Image
-                src="https://github.com/ariel-coda/TinyLMS/blob/main/frontend/public/screenshots/tinyLMS.PNG"
+              <img
+                src="/screenshots/tinylms.webp"
                 alt="Aperçu de la plateforme"
-                width={1200}
-                height={800}
                 className="mx-auto rounded-xl shadow-lg border border-gray-100"
               />
             </div>
