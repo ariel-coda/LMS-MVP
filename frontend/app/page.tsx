@@ -127,7 +127,7 @@ export default function LandingPage(): JSX.Element {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-white">
+    <div className="min-h-screen bg-gradient-to-br bg-white">
       {/* Header */}
       <header className="bg-white/90 backdrop-blur-xl border-b border-gray-100/50 sticky top-0 z-50 transition-all duration-300">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -143,7 +143,11 @@ export default function LandingPage(): JSX.Element {
                 <a
                   key={item}
                   href={`#${item.toLowerCase()}`}
-                  className="text-gray-600 hover:text-blue-600 font-medium transition-all duration-300 relative group"
+                  className={`font-medium transition-all duration-300 relative ${
+                    item === "Notre solution"
+                      ? "text-blue-600" // actif
+                      : "text-gray-600 hover:text-blue-600"
+                  }`}
                 >
                   {item}
                 </a>
@@ -165,7 +169,7 @@ export default function LandingPage(): JSX.Element {
 
         {/* Mobile menu */}
         {isMenuOpen && (
-          <div className="md:hidden bg-white/95 backdrop-blur-xl border-t border-gray-100/50">
+          <div className="md:hidden bg-blue/95 backdrop-blur-xl border-t border-gray-100/50">
             <nav className="px-4 py-4 space-y-2">
               {["Notre solution", ""].map((item) => (
                 <a
@@ -218,12 +222,11 @@ export default function LandingPage(): JSX.Element {
                 alt="Aperçu de la plateforme"
                 width={1200}
                 height={800}
-                className="mx-auto rounded-xl shadow-lg"
+                className="mx-auto rounded-xl shadow-lg border border-gray-100"
               />
             </div>
           </div>
         </div>
-
       </section>
 
       {/* Stats Section */}
