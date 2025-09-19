@@ -1925,11 +1925,6 @@ const Dashboard = () => {
       icon: PencilRuler,
     },
     {
-      id: "analytics",
-      name: "Analytics",
-      icon: TrendingUp,
-    },
-    {
       id: "notifications",
       name: "Notifications",
       icon: Bell,
@@ -1993,12 +1988,6 @@ const Dashboard = () => {
         "Invitez et organisez vos étudiants par filières et formations.",
       cta: "Ajouter des étudiants",
       icon: Users,
-    },
-    analytics: {
-      title: "Analysez les performances",
-      description: "Suivez les progrès et l'engagement de vos étudiants.",
-      cta: "Voir les statistiques",
-      icon: TrendingUp,
     },
     notifications: {
       title: "Restez informé",
@@ -4359,331 +4348,289 @@ const Dashboard = () => {
     setShowEditSectionForm(true);
   };
 
-  const renderSectionsContent = () => (
-    <div className="space-y-6">
-      {/* Header avec sélection de cours */}
-      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
-        <div>
-          <h1 className="text-2xl font-bold text-gray-900">
-            Sections de cours
-          </h1>
-          <p className="text-gray-600 mt-1">
-            Gérez le contenu pédagogique de vos cours
-          </p>
-        </div>
-
-        <div className="flex flex-col sm:flex-row gap-3">
-          {/* Sélecteur de cours */}
-          <select
-            value={selectedCourse?.id || " "}
-            onChange={(e) => {
-              const course = courses.find((c) => c.id === e.target.value);
-              setSelectedCourse(course || null);
-            }}
-            className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white min-w-48"
-          >
-            {courses.map((course) => (
-              <option key={course.id} value={course.id}>
-                {course.nom}
-              </option>
-            ))}
-          </select>
-
-          <button
-            onClick={() => setShowSectionForm(true)}
-            disabled={!selectedCourse}
-            className="bg-blue-600 hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed text-white px-4 py-2 rounded-md font-medium transition-colors flex items-center gap-2"
-          >
-            <Plus size={18} />
-            Nouvelle section
-          </button>
-        </div>
+const renderSectionsContent = () => (
+  <div className="space-y-4 sm:space-y-6">
+    {/* Header avec sélection de cours */}
+    <div className="flex flex-col space-y-4 lg:flex-row lg:items-center lg:justify-between lg:space-y-0 bg-white max-w-full mx-auto px-3 sm:px-4 lg:px-8 py-4 sm:py-6 lg:py-8 shadow-xs rounded-lg">
+      <div className="min-w-0 flex-1">
+        <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 truncate">Section de cours</h1>
+        <p className="mt-1 sm:mt-2 text-sm sm:text-base text-gray-600">Organisez et structurez votre contenu pédagogique</p>
       </div>
 
-      {!selectedCourse ? (
-        /* État de sélection de cours */
-        <div className="text-center py-16">
-          <div className="w-16 h-16 bg-blue-50 rounded-2xl flex items-center justify-center mx-auto mb-4">
-            <BookOpen className="w-8 h-8 text-blue-500" />
-          </div>
-          <h3 className="text-lg font-semibold text-gray-900 mb-2">
-            Sélectionnez un cours
-          </h3>
-          <p className="text-gray-600 mb-6 max-w-md mx-auto">
-            Choisissez un cours dans la liste ci-dessus pour voir ses sections
-            ou en créer de nouvelles.
-          </p>
-        </div>
-      ) : sections.length === 0 ? (
-        /* État vide pour le cours sélectionné */
-        <div className="text-center py-16">
-          <div className="w-16 h-16 bg-gray-50 border-2 border-dashed border-gray-300 rounded-2xl flex items-center justify-center mx-auto mb-4">
-            <FileText className="w-8 h-8 text-gray-400" />
-          </div>
-          <h3 className="text-lg font-semibold text-gray-900 mb-2">
-            Aucune section pour ce cours
-          </h3>
-          <p className="text-gray-600 mb-6 max-w-md mx-auto">
-            Créez la première section de "{selectedCourse.nom}" avec du contenu
-            PDF ou vidéo.
-          </p>
-          <button
-            onClick={() => setShowSectionForm(true)}
-            className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-md font-medium transition-colors"
-          >
-            Créer une section
-          </button>
-        </div>
-      ) : (
-        /* Liste des sections */
-        <div className="space-y-4">
-          {/* Info du cours sélectionné */}
-          <div className="bg-blue-50 border border-blue-200 rounded-md p-4">
-            <div className="flex items-start justify-between">
-              <div>
-                <h3 className="font-semibold text-blue-900">
-                  {selectedCourse.nom}
-                </h3>
-                <p className="text-blue-700 text-sm mt-1">
-                  {sections.length} section(s) • {selectedCourse.duration}h de
-                  formations
-                </p>
-              </div>
-              <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs font-medium">
-                Cours actif
-              </span>
-            </div>
-          </div>
+      <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 w-full sm:w-auto">
+        {/* Sélecteur de cours */}
+        <select
+          value={selectedCourse?.id || " "}
+          onChange={(e) => {
+            const course = courses.find((c) => c.id === e.target.value);
+            setSelectedCourse(course || null);
+          }}
+          className="w-full sm:w-48 px-3 py-2 text-sm sm:text-base border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white"
+        >
+          {courses.map((course) => (
+            <option key={course.id} value={course.id}>
+              {course.nom}
+            </option>
+          ))}
+        </select>
 
-          {/* Actions globales */}
-          <div className="flex gap-2 text-sm">
-            <button
-              onClick={() => setCollapsedSections(new Set())}
-              className="text-blue-600 hover:text-blue-700"
-            >
-              Tout déplier
-            </button>
-            <span className="text-gray-300">•</span>
-            <button
-              onClick={() =>
-                setCollapsedSections(new Set(sections.map((s) => s.id)))
-              }
-              className="text-blue-600 hover:text-blue-700"
-            >
-              Tout replier
-            </button>
-          </div>
-          {/* Stats en bas */}
-          <div className="bg-gray-50 rounded-lg p-4">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
-              <div>
-                <div className="text-xl font-bold text-gray-900">
-                  {sections.length}
+        <button
+          onClick={() => setShowSectionForm(true)}
+          disabled={!selectedCourse}
+          className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed text-white px-4 py-2 rounded-md text-sm sm:text-base font-medium transition-colors flex items-center justify-center gap-2"
+        >
+          <Plus size={16} className="sm:w-[18px] sm:h-[18px]" />
+          <span className="truncate">Nouvelle section</span>
+        </button>
+      </div>
+    </div>
+
+    {!selectedCourse ? (
+      /* État de sélection de cours */
+      <div className="text-center py-12 sm:py-16 px-4">
+        <div className="w-12 h-12 sm:w-16 sm:h-16 bg-blue-50 rounded-2xl flex items-center justify-center mx-auto mb-3 sm:mb-4">
+          <BookOpen className="w-6 h-6 sm:w-8 sm:h-8 text-blue-500" />
+        </div>
+        <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-2">
+          Sélectionnez un cours
+        </h3>
+        <p className="text-sm sm:text-base text-gray-600 mb-4 sm:mb-6 max-w-sm mx-auto">
+          Choisissez un cours dans la liste ci-dessus pour voir ses sections
+          ou en créer de nouvelles.
+        </p>
+      </div>
+    ) : sections.length === 0 ? (
+      /* État vide pour le cours sélectionné */
+      <div className="text-center py-12 sm:py-16 px-4">
+        <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gray-50 border-2 border-dashed border-gray-300 rounded-2xl flex items-center justify-center mx-auto mb-3 sm:mb-4">
+          <FileText className="w-6 h-6 sm:w-8 sm:h-8 text-gray-400" />
+        </div>
+        <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-2">
+          Aucune section pour ce cours
+        </h3>
+        <p className="text-sm sm:text-base text-gray-600 mb-4 sm:mb-6 max-w-sm mx-auto">
+          Créez la première section de "{selectedCourse.nom}" avec du contenu
+          PDF ou vidéo.
+        </p>
+        <button
+          onClick={() => setShowSectionForm(true)}
+          className="bg-blue-600 hover:bg-blue-700 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-md text-sm sm:text-base font-medium transition-colors"
+        >
+          Créer une section
+        </button>
+      </div>
+    ) : (
+      /* Interface avec design minimaliste et responsive optimisé */
+      <div className="min-h-screen bg-gray-50">
+        {/* Contenu principal avec espacement approprié */}
+        <div className="w-full max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-4 sm:py-6 lg:py-8 space-y-4 sm:space-y-6 lg:space-y-8">
+          {/* En-tête du cours sélectionné - Design épuré */}
+          {selectedCourse && (
+            <div className="bg-white rounded-lg border border-gray-200 p-4 sm:p-6 lg:p-8 w-full">
+              <div className="flex flex-col space-y-4 lg:flex-row lg:items-start lg:justify-between lg:space-y-0 lg:space-x-8">
+                <div className="flex-1 min-w-0">
+                  <div className="flex flex-col space-y-2 sm:flex-row sm:items-center sm:space-y-0 sm:space-x-4">
+                    <h2 className="text-lg sm:text-xl lg:text-2xl font-semibold text-gray-900 truncate">
+                      {selectedCourse.nom}
+                    </h2>
+                    <span className="inline-flex items-center px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm bg-gray-100 text-gray-700 w-fit">
+                      {sections.length} section{sections.length > 1 ? 's' : ''}
+                    </span>
+                  </div>
+                  <p className="mt-1 sm:mt-2 text-xs sm:text-sm lg:text-base text-gray-600">
+                    {selectedCourse.duration}h de contenu • Mis à jour récemment
+                  </p>
                 </div>
-                <div className="text-xs text-gray-600">Sections</div>
-              </div>
-              <div>
-                <div className="text-xl font-bold text-gray-900">
-                  {sections.filter((s) => s.has_pdf).length}
+
+                {/* Actions simplifiées */}
+                <div className="flex flex-row gap-2 text-xs sm:text-sm">
+                  <button
+                    onClick={() => setCollapsedSections(new Set())}
+                    className="px-2 sm:px-3 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-md transition-colors whitespace-nowrap"
+                  >
+                    Tout déplier
+                  </button>
+                  <button
+                    onClick={() => setCollapsedSections(new Set(sections.map((s) => s.id)))}
+                    className="px-2 sm:px-3 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-md transition-colors whitespace-nowrap"
+                  >
+                    Tout replier
+                  </button>
                 </div>
-                <div className="text-xs text-gray-600">Documents</div>
-              </div>
-              <div>
-                <div className="text-xl font-bold text-gray-900">
-                  {sections.filter((s) => s.has_video).length}
-                </div>
-                <div className="text-xs text-gray-600">Vidéos</div>
-              </div>
-              <div>
-                <div className="text-xl font-bold text-gray-900">
-                  {exercises.length}
-                </div>
-                <div className="text-xs text-gray-600">Exercices</div>
               </div>
             </div>
-          </div>
-          {/* Grille des sections pliables */}
-          <div className="grid gap-3">
+          )}
+
+          {/* Liste des sections - Design minimaliste */}
+          <div className="space-y-4 sm:space-y-6 w-full">
             {sections.map((section, index) => {
               const isCollapsed = isSectionCollapsed(section.id);
+              const sectionExercises = getExercisesForSection(section.id);
 
               return (
                 <div
                   key={section.id}
-                  className="bg-white border border-gray-200 rounded-md hover:border-blue-200 transition-all duration-200"
+                  className="bg-white rounded-lg border border-gray-200 w-full"
                 >
-                  {/* Header de la section - Toujours visible */}
+                  {/* Header section épuré */}
                   <div
-                    className="p-4 cursor-pointer"
+                    className="p-3 sm:p-4 lg:p-6 cursor-pointer hover:bg-gray-50 transition-colors"
                     onClick={() => toggleSection(section.id)}
                   >
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-3">
-                        {/* Bouton collapse/expand */}
-                        <button className="text-gray-400 hover:text-gray-600 transition-colors">
-                          {isCollapsed ? (
-                            <ChevronRight size={20} />
-                          ) : (
-                            <ChevronDown size={20} />
+                    <div className="flex items-center space-x-2 sm:space-x-3 lg:space-x-4">
+                      {/* Indicateur d'expansion */}
+                      <button className="p-1 hover:bg-gray-100 rounded transition-colors flex-shrink-0">
+                        {isCollapsed ? (
+                          <ChevronRight size={16} className="sm:w-[18px] sm:h-[18px] text-gray-400" />
+                        ) : (
+                          <ChevronDown size={16} className="sm:w-[18px] sm:h-[18px] text-gray-400" />
+                        )}
+                      </button>
+
+                      {/* Numéro de section minimaliste */}
+                      <div className="w-6 h-6 sm:w-8 sm:h-8 bg-blue-600 rounded-lg flex items-center justify-center flex-shrink-0">
+                        <span className="text-xs sm:text-sm font-semibold text-white">
+                          {section.ordre}
+                        </span>
+                      </div>
+
+                      {/* Titre et métadonnées */}
+                      <div className="flex-1 min-w-0">
+                        <h3 className="text-sm sm:text-base lg:text-lg font-medium text-gray-900 truncate">
+                          {section.nom}
+                        </h3>
+                        
+                        {/* Indicateurs simplifiés */}
+                        <div className="flex items-center space-x-2 sm:space-x-3 lg:space-x-4 mt-1 text-xs sm:text-sm text-gray-500">
+                          {section.has_video && (
+                            <span className="flex items-center space-x-1">
+                              <PlayCircle size={12} className="sm:w-[14px] sm:h-[14px]" />
+                              <span className="hidden xs:inline">Vidéo</span>
+                            </span>
                           )}
-                        </button>
-
-                        {/* Numéro d'ordre */}
-                        <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
-                          <span className="text-sm font-bold text-blue-600">
-                            {section.ordre}
-                          </span>
-                        </div>
-
-                        {/* Titre et badges de contenu */}
-                        <div className="flex items-center gap-3">
-                          <h4 className="text-lg font-semibold text-gray-900">
-                            {section.nom}
-                          </h4>
-
-                          {/* Badges de contenu disponible */}
-                          <div className="flex gap-1">
-                            {section.has_video && (
-                              <span
-                                className="w-2 h-2 bg-purple-400 rounded-full"
-                                title="Contient une vidéo"
-                              />
-                            )}
-                            {section.has_pdf && (
-                              <span
-                                className="w-2 h-2 bg-gray-400 rounded-full"
-                                title="Contient un document"
-                              />
-                            )}
-                          </div>
+                          {section.has_pdf && (
+                            <span className="flex items-center space-x-1">
+                              <FileText size={12} className="sm:w-[14px] sm:h-[14px]" />
+                              <span className="hidden xs:inline">Document</span>
+                            </span>
+                          )}
+                          {sectionExercises.length > 0 && (
+                            <span className="flex items-center space-x-1">
+                              <PenTool size={12} className="sm:w-[14px] sm:h-[14px]" />
+                              <span>{sectionExercises.length} ex.</span>
+                            </span>
+                          )}
                         </div>
                       </div>
 
-                      {/* Actions rapides - toujours visibles */}
+                      {/* Actions compactes */}
                       <div
-                        className="flex items-center gap-1"
+                        className="flex items-center space-x-1 flex-shrink-0"
                         onClick={(e) => e.stopPropagation()}
                       >
                         <button
                           onClick={() => handleAddExercice(section)}
-                          className="px-3 py-1.5 bg-blue-50 text-blue-600 hover:bg-blue-100 rounded-md text-sm font-medium transition-colors flex items-center gap-1"
-                          title="Ajouter un exercice"
+                          className="hidden sm:flex items-center px-2 sm:px-3 py-1 sm:py-2 text-xs sm:text-sm text-blue-600 bg-blue-50 hover:bg-blue-100 rounded-md transition-colors whitespace-nowrap"
                         >
-                          <Plus size={14} />
-                          Ajouter un Exercice
+                          <Plus size={12} className="sm:w-[14px] sm:h-[14px] mr-1" />
+                          Exercice
                         </button>
 
-                        <button
-                          onClick={() => handleEditSection(section)}
-                          className="p-2 text-gray-400 hover:text-green-600 hover:bg-green-50 rounded-md transition-colors"
-                          title="Modifier la section"
-                        >
-                          <Pencil size={14} />
-                        </button>
-
-                        <button
-                          onClick={() => handleDeleteSection(section.id)}
-                          className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-md transition-colors"
-                          title="Supprimer la section"
-                        >
-                          <Trash2 size={14} />
-                        </button>
+                        {/* Menu actions mobile/desktop */}
+                        <div className="flex items-center">
+                          <button
+                            onClick={() => handleEditSection(section)}
+                            className="p-1.5 sm:p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-md transition-colors"
+                          >
+                            <Pencil size={14} className="sm:w-4 sm:h-4" />
+                          </button>
+                          <button
+                            onClick={() => handleDeleteSection(section.id)}
+                            className="p-1.5 sm:p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-md transition-colors"
+                          >
+                            <Trash2 size={14} className="sm:w-4 sm:h-4" />
+                          </button>
+                        </div>
                       </div>
                     </div>
                   </div>
 
-                  {/* Contenu détaillé - Masquable */}
+                  {/* Contenu détaillé */}
                   {!isCollapsed && (
-                    <div className="px-4 pb-4 border-t border-gray-100">
-                      <div className="ml-11 space-y-4">
-                        {/* Description complète */}
-                        {section.description && (
-                          <p className="text-gray-600 text-sm leading-relaxed pt-4">
-                            {section.description}
-                          </p>
-                        )}
+                    <div className="border-t border-gray-100 p-3 sm:p-4 lg:p-6 space-y-4 sm:space-y-6 w-full">
+                      {/* Description - Responsive text */}
+                      {section.description && (
+                        <div className="text-gray-600 text-xs sm:text-sm leading-relaxed break-words">
+                          {section.description}
+                        </div>
+                      )}
 
-                        {/* Contenu vidéo avec prévisualisation */}
+                      {/* Contenu multimédia - Responsive spacing */}
+                      <div className="space-y-4 sm:space-y-6">
+                        {/* Vidéo - Responsive aspect ratio */}
                         {section.has_video && (
-                          <div>
-                            <h5 className="text-sm font-medium text-gray-700 mb-3 flex items-center gap-2">
-                              <PlayCircle
-                                size={16}
-                                className="text-purple-600"
-                              />
-                              Vidéo: {getVideoFileName(section)}
-                            </h5>
-                            <div className="relative bg-gray-900 rounded-md overflow-hidden">
+                          <div className="space-y-2 sm:space-y-3">
+                            <div className="flex items-center space-x-2 text-xs sm:text-sm font-medium text-gray-900">
+                              <PlayCircle size={12} className="sm:w-4 sm:h-4 text-purple-600 flex-shrink-0" />
+                              <span className="truncate">{getVideoFileName(section)}</span>
+                            </div>
+                            <div className="rounded-lg overflow-hidden bg-gray-900 w-full">
                               <video
                                 controls
                                 controlsList="nodownload"
                                 preload="metadata"
-                                className="w-full h-full object-cover"
+                                className="w-full aspect-video object-cover"
                               >
                                 <source
                                   src={getVideoUrl(section) ?? "undefined.mp4"}
                                   type="video/mp4"
                                 />
-                                Votre navigateur ne supporte pas la lecture
-                                vidéo.
+                                Votre navigateur ne supporte pas la lecture vidéo.
                               </video>
                             </div>
                           </div>
                         )}
 
-                        {/* Section Ressources pour les documents */}
+                        {/* Document PDF - Mobile optimized */}
                         {section.has_pdf && (
-                          <div>
-                            <h5 className="text-sm font-medium text-gray-700 mb-3 flex items-center gap-2">
-                              <FileText size={16} className="text-gray-600" />
-                              Ressources
-                            </h5>
-                            <div className="border border-gray-200 rounded-lg p-4">
-                              <div className="flex items-center justify-between">
-                                <div className="flex items-center gap-3">
-                                  <div className="w-10 h-10 bg-red-50 rounded-lg flex items-center justify-center">
-                                    <FileText
-                                      size={20}
-                                      className="text-red-500"
-                                    />
+                          <div className="space-y-2 sm:space-y-3">
+                            <div className="flex items-center space-x-2 text-xs sm:text-sm font-medium text-gray-900">
+                              <FileText size={12} className="sm:w-4 sm:h-4 text-red-600 flex-shrink-0" />
+                              <span>Document</span>
+                            </div>
+                            <div className="bg-gray-50 rounded-lg p-3 sm:p-4 w-full">
+                              <div className="flex items-center justify-between gap-2 sm:gap-3 min-w-0">
+                                <div className="flex items-center space-x-2 sm:space-x-3 flex-1 min-w-0">
+                                  <div className="w-8 h-8 sm:w-10 sm:h-10 bg-red-500 rounded-lg flex items-center justify-center flex-shrink-0">
+                                    <FileText size={14} className="sm:w-5 sm:h-5 text-white" />
                                   </div>
-                                  <div>
-                                    <p className="font-medium text-gray-900">
+                                  <div className="flex-1 min-w-0">
+                                    <p className="font-medium text-gray-900 truncate text-xs sm:text-sm">
                                       {getPdfFileName(section)}
                                     </p>
-                                    <p className="text-sm text-gray-500">
-                                      Document PDF
-                                    </p>
+                                    <p className="text-xs text-gray-500">PDF</p>
                                   </div>
                                 </div>
-
-                                {/* Actions pour le PDF */}
-                                <div className="flex items-center gap-2">
+                                <div className="flex items-center space-x-1 flex-shrink-0">
                                   <button
                                     onClick={() => {
                                       const pdfUrl = getPdfUrl(section);
                                       if (pdfUrl) {
                                         handleDownloadFile(
                                           pdfUrl,
-                                          getPdfFileName(section) ||
-                                            "document.pdf"
+                                          getPdfFileName(section) || "document.pdf"
                                         );
                                       }
                                     }}
-                                    className="px-4 py-2 bg-gray-50 hover:bg-gray-100 text-gray-700 rounded-lg text-sm font-medium transition-colors flex items-center gap-2"
+                                    className="p-1.5 sm:p-2 text-gray-500 hover:text-gray-700 hover:bg-white rounded-md transition-colors"
                                   >
-                                    <Eye size={16} />
+                                    <Eye size={12} className="sm:w-4 sm:h-4" />
                                   </button>
-
-                                  {/* Bouton de suppression du PDF */}
                                   <button
-                                    onClick={() =>
-                                      handledeletePDFSection(section)
-                                    }
-                                    className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
-                                    title="Supprimer le document PDF"
+                                    onClick={() => handledeletePDFSection(section)}
+                                    className="p-1.5 sm:p-2 text-gray-500 hover:text-red-500 hover:bg-white rounded-md transition-colors"
                                   >
-                                    <Trash2 size={16} />
+                                    <Trash2 size={12} className="sm:w-4 sm:h-4" />
                                   </button>
                                 </div>
                               </div>
@@ -4691,188 +4638,123 @@ const Dashboard = () => {
                           </div>
                         )}
 
-                        {/* État si aucun contenu */}
+                        {/* État vide - Responsive buttons */}
                         {!section.has_pdf && !section.has_video && (
-                          <div className="text-center py-6 border-2 border-dashed border-gray-200 rounded-md">
-                            <FileText className="w-8 h-8 text-gray-300 mx-auto mb-2" />
-                            <p className="text-gray-500 text-sm">
-                              Aucun contenu ajouté
+                          <div className="text-center py-6 sm:py-8 border border-dashed border-gray-300 rounded-lg">
+                            <FileText className="w-6 h-6 sm:w-8 sm:h-8 text-gray-400 mx-auto mb-2 sm:mb-3" />
+                            <p className="text-xs sm:text-sm text-gray-500 mb-3 sm:mb-4">
+                              Aucun contenu dans cette section
                             </p>
-                            <button className="mt-2 text-blue-600 hover:text-blue-700 text-sm font-medium">
-                              Ajouter du contenu
-                            </button>
+                            <div className="flex flex-col sm:flex-row justify-center gap-2">
+                              <button
+                                onClick={() => handleEditSection(section)}
+                                className="px-3 py-2 text-xs sm:text-sm text-purple-600 bg-purple-50 hover:bg-purple-100 rounded-md transition-colors"
+                              >
+                                Ajouter vidéo
+                              </button>
+                              <button
+                                onClick={() => handleEditSection(section)}
+                                className="px-3 py-2 text-xs sm:text-sm text-gray-600 bg-gray-100 hover:bg-gray-200 rounded-md transition-colors"
+                              >
+                                Ajouter document
+                              </button>
+                            </div>
                           </div>
                         )}
+                      </div>
 
-                        {(() => {
-                          const sectionExercises = getExercisesForSection(
-                            section.id
-                          );
-                          return sectionExercises.length > 0 ? (
-                            <div>
-                              <h5 className="text-sm font-medium text-gray-700 mb-3 flex items-center gap-2">
-                                <PenTool size={16} className="text-green-600" />
-                                Exercices ({sectionExercises.length})
-                              </h5>
-                              <div className="space-y-3">
-                                {sectionExercises.map((exercise) => (
-                                  <div
-                                    key={exercise.id}
-                                    className="border border-gray-200 rounded-lg p-3 bg-gray-50"
-                                  >
-                                    <div className="flex items-center justify-between">
-                                      <div className="flex items-center gap-3">
-                                        {/* Icône selon le type d'exercice */}
-                                        <div className="w-8 h-8 rounded-lg flex items-center justify-center">
-                                          {exercise.type === "pdf" && (
-                                            <div className="bg-red-100 w-8 h-8 rounded-lg flex items-center justify-center">
-                                              <FileText
-                                                size={16}
-                                                className="text-red-500"
-                                              />
-                                            </div>
-                                          )}
-                                          {exercise.type === "qcm" && (
-                                            <div className="bg-blue-100 w-8 h-8 rounded-lg flex items-center justify-center">
-                                              <CheckCircle
-                                                size={16}
-                                                className="text-blue-500"
-                                              />
-                                            </div>
-                                          )}
-                                          {exercise.type === "qro" && (
-                                            <div className="bg-green-100 w-8 h-8 rounded-lg flex items-center justify-center">
-                                              <Edit3
-                                                size={16}
-                                                className="text-green-500"
-                                              />
-                                            </div>
-                                          )}
-                                        </div>
-
-                                        <div className="flex-1">
-                                          <div className="flex items-center gap-2">
-                                            <p className="font-medium text-gray-900 text-sm">
-                                              {exercise.nom}
-                                            </p>
-
-                                            {/* Badge du type */}
-                                            <span
-                                              className={`px-2 py-1 rounded-full text-xs font-medium ${
-                                                exercise.type === "pdf"
-                                                  ? "bg-red-100 text-red-700"
-                                                  : exercise.type === "qcm"
-                                                  ? "bg-blue-100 text-blue-700"
-                                                  : "bg-green-100 text-green-700"
-                                              }`}
-                                            >
-                                              {exercise.type.toUpperCase()}
+                      {/* Exercices - Fully responsive */}
+                      {sectionExercises.length > 0 && (
+                        <div className="space-y-2 sm:space-y-3">
+                          <div className="flex items-center space-x-2 text-xs sm:text-sm font-medium text-gray-900">
+                            <PenTool size={12} className="sm:w-4 sm:h-4 text-green-600 flex-shrink-0" />
+                            <span>Exercices ({sectionExercises.length})</span>
+                          </div>
+                          <div className="space-y-2 w-full">
+                            {sectionExercises.map((exercise) => (
+                              <div
+                                key={exercise.id}
+                                className="bg-gray-50 rounded-lg p-3 sm:p-4 hover:bg-gray-100 transition-colors w-full"
+                              >
+                                <div className="flex items-center justify-between gap-2 sm:gap-3 min-w-0">
+                                  <div className="flex items-center space-x-2 sm:space-x-3 flex-1 min-w-0">
+                                    <div className={`w-6 h-6 sm:w-8 sm:h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${
+                                      exercise.type === "pdf" ? "bg-red-500" :
+                                      exercise.type === "qcm" ? "bg-blue-500" : "bg-green-500"
+                                    }`}>
+                                      {exercise.type === "pdf" && <FileText size={10} className="sm:w-4 sm:h-4 text-white" />}
+                                      {exercise.type === "qcm" && <CheckCircle size={10} className="sm:w-4 sm:h-4 text-white" />}
+                                      {exercise.type === "qro" && <Edit3 size={10} className="sm:w-4 sm:h-4 text-white" />}
+                                    </div>
+                                    
+                                    <div className="flex-1 min-w-0">
+                                      <div className="flex flex-col sm:flex-row sm:items-center sm:space-x-2 space-y-1 sm:space-y-0">
+                                        <p className="font-medium text-gray-900 truncate text-xs sm:text-sm">
+                                          {exercise.nom}
+                                        </p>
+                                        <span className={`px-2 py-0.5 sm:py-1 rounded-full text-xs font-medium w-fit ${
+                                          exercise.type === "pdf" ? "bg-red-100 text-red-700" :
+                                          exercise.type === "qcm" ? "bg-blue-100 text-blue-700" : 
+                                          "bg-green-100 text-green-700"
+                                        }`}>
+                                          {exercise.type.toUpperCase()}
+                                        </span>
+                                      </div>
+                                      
+                                      {(exercise.duree_minutes || exercise.questions_count) && (
+                                        <div className="flex flex-wrap items-center gap-2 sm:gap-3 text-xs text-gray-500 mt-1">
+                                          {exercise.duree_minutes && (
+                                            <span className="flex items-center space-x-1">
+                                              <Clock size={10} className="flex-shrink-0" />
+                                              <span>{exercise.duree_minutes} min</span>
                                             </span>
-                                          </div>
-
-                                          {/* Informations supplémentaires */}
-                                          <div className="flex items-center gap-3 text-xs text-gray-500 mt-1">
-                                            {exercise.type !== "pdf" && (
-                                              <>
-                                                {exercise.duree_minutes && (
-                                                  <span className="flex items-center gap-1">
-                                                    <Clock size={12} />
-                                                    {exercise.duree_minutes} min
-                                                  </span>
-                                                )}
-                                                {exercise.note_sur && (
-                                                  <span>
-                                                    Note sur {exercise.note_sur}
-                                                  </span>
-                                                )}
-                                                {(exercise.type === "qcm" ||
-                                                  exercise.type === "qro") && (
-                                                  <span>
-                                                    {exercise.questions_count ||
-                                                      0}{" "}
-                                                    question(s)
-                                                  </span>
-                                                )}
-                                              </>
-                                            )}
-                                          </div>
-
-                                          {/* Description si présente */}
-                                          {exercise.description && (
-                                            <p className="text-xs text-gray-600 mt-1 line-clamp-1">
-                                              {exercise.description}
-                                            </p>
+                                          )}
+                                          {exercise.questions_count && (
+                                            <span>{exercise.questions_count} questions</span>
                                           )}
                                         </div>
-                                      </div>
-
-                                      {/* Actions */}
-                                      <div className="flex items-center gap-1">
-                                        {/* Bouton principal selon le type */}
-                                        {exercise.type === "pdf" ? (
-                                          <button
-                                            onClick={() =>
-                                              handleDownloadExercise(exercise)
-                                            }
-                                            className="px-3 py-1.5 bg-red-50 text-red-600 hover:bg-red-100 rounded-md text-xs transition-colors flex items-center gap-1"
-                                            title="ouvrir l'exercice PDF"
-                                          >
-                                            <Eye size={12} />
-                                          </button>
-                                        ) : null}
-
-                                        {/* Menu actions */}
-                                        <button
-                                          onClick={() => {
-                                            openEditExerciseForm(exercise);
-                                          }}
-                                          className="p-1.5 text-gray-400 hover:text-green-600 hover:bg-green-50 rounded-md transition-colors"
-                                          title="Modifier l'exercice"
-                                        >
-                                          <Pencil size={12} />
-                                        </button>
-
-                                        <button
-                                          onClick={() =>
-                                            handleDeleteExercise(exercise.id)
-                                          }
-                                          className="p-1.5 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-md transition-colors"
-                                          title="Supprimer l'exercice"
-                                        >
-                                          <Trash2 size={12} />
-                                        </button>
-                                      </div>
+                                      )}
                                     </div>
                                   </div>
-                                ))}
-                              </div>
-                            </div>
-                          ) : null;
-                        })()}
 
-                        {/* Actions supplémentaires */}
-                        <div className="flex justify-between items-center pt-3 border-t border-gray-100">
-                          <div className="flex gap-2">
-                            {!section.has_video && (
-                              <button
-                                onClick={() => handleEditSection(section)}
-                                className="px-3 py-1.5 bg-purple-50 text-purple-600 hover:bg-purple-100 rounded-md text-sm transition-colors flex items-center gap-1"
-                              >
-                                <PlayCircle size={14} />
-                                Ajouter une vidéo
-                              </button>
-                            )}
-                            {!section.has_pdf && (
-                              <button
-                                className="px-3 py-1.5 bg-gray-50 text-gray-600 hover:bg-gray-100 rounded-md text-sm transition-colors flex items-center gap-1"
-                                onClick={() => handleEditSection(section)}
-                              >
-                                <FileText size={14} />
-                                Ajouter un document
-                              </button>
-                            )}
+                                  <div className="flex items-center space-x-1 flex-shrink-0">
+                                    {exercise.type === "pdf" && (
+                                      <button
+                                        onClick={() => handleDownloadExercise(exercise)}
+                                        className="p-1.5 sm:p-2 text-gray-400 hover:text-gray-600 hover:bg-white rounded-md transition-colors"
+                                      >
+                                        <Eye size={12} className="sm:w-4 sm:h-4" />
+                                      </button>
+                                    )}
+                                    <button
+                                      onClick={() => openEditExerciseForm(exercise)}
+                                      className="p-1.5 sm:p-2 text-gray-400 hover:text-gray-600 hover:bg-white rounded-md transition-colors"
+                                    >
+                                      <Pencil size={12} className="sm:w-4 sm:h-4" />
+                                    </button>
+                                    <button
+                                      onClick={() => handleDeleteExercise(exercise.id)}
+                                      className="p-1.5 sm:p-2 text-gray-400 hover:text-red-500 hover:bg-white rounded-md transition-colors"
+                                    >
+                                      <Trash2 size={12} className="sm:w-4 sm:h-4" />
+                                    </button>
+                                  </div>
+                                </div>
+                              </div>
+                            ))}
                           </div>
                         </div>
+                      )}
+
+                      {/* Bouton mobile pour ajouter exercice - Always visible on mobile */}
+                      <div className="sm:hidden pt-3 border-t border-gray-100">
+                        <button
+                          onClick={() => handleAddExercice(section)}
+                          className="w-full flex items-center justify-center px-4 py-2 text-xs text-blue-600 bg-blue-50 hover:bg-blue-100 rounded-lg transition-colors"
+                        >
+                          <Plus size={14} className="mr-2" />
+                          Ajouter un exercice
+                        </button>
                       </div>
                     </div>
                   )}
@@ -4880,17 +4762,53 @@ const Dashboard = () => {
               );
             })}
           </div>
-        </div>
-      )}
 
-      {loadingSections && (
-        <div className="text-center py-8">
-          <div className="w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto mb-2"></div>
-          <p className="text-gray-600 text-sm">Chargement des sections...</p>
+          {/* Statistiques - Fully responsive grid */}
+          <div className="bg-white rounded-lg border border-gray-200 p-4 sm:p-6 w-full">
+            <h3 className="text-sm sm:text-base lg:text-lg font-medium text-gray-900 mb-3 sm:mb-4 lg:mb-6">
+              Aperçu du cours
+            </h3>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 lg:gap-6">
+              <div className="text-center">
+                <div className="text-lg sm:text-xl lg:text-2xl font-bold text-blue-600 mb-1">
+                  {sections.length}
+                </div>
+                <p className="text-xs sm:text-sm text-gray-600">Sections</p>
+              </div>
+              <div className="text-center">
+                <div className="text-lg sm:text-xl lg:text-2xl font-bold text-red-600 mb-1">
+                  {sections.filter((s) => s.has_pdf).length}
+                </div>
+                <p className="text-xs sm:text-sm text-gray-600">Documents</p>
+              </div>
+              <div className="text-center">
+                <div className="text-lg sm:text-xl lg:text-2xl font-bold text-purple-600 mb-1">
+                  {sections.filter((s) => s.has_video).length}
+                </div>
+                <p className="text-xs sm:text-sm text-gray-600">Vidéos</p>
+              </div>
+              <div className="text-center">
+                <div className="text-lg sm:text-xl lg:text-2xl font-bold text-green-600 mb-1">
+                  {exercises.length}
+                </div>
+                <p className="text-xs sm:text-sm text-gray-600">Exercices</p>
+              </div>
+            </div>
+          </div>
         </div>
-      )}
-    </div>
-  );
+      </div>
+    )}
+
+    {/* Loading state - Responsive */}
+    {loadingSections && (
+      <div className="text-center py-6 sm:py-8 px-4">
+        <div className="w-6 h-6 sm:w-8 sm:h-8 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto mb-2">
+        </div>
+        <p className="text-gray-600 text-xs sm:text-sm">Chargement des sections...</p>
+      </div>
+    )}
+  </div>
+);
 
   const renderStudentsContent = () => (
     <div className="space-y-6">
