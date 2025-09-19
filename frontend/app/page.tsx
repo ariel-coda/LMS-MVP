@@ -218,7 +218,7 @@ export default function LandingPage(): JSX.Element {
 
             <div className="mt-12 sm:display-none md:display-none">
               <Image
-                src="/screenshots/tinyLMS.png"
+                src="/screenshots/tinylms.png"
                 alt="Aperçu de la plateforme"
                 width={1200}
                 height={800}
