@@ -142,7 +142,7 @@ export default function LandingPage(): JSX.Element {
             </div>
 
             <nav className="hidden md:flex space-x-8">
-              {["Notre solution", "Comment ça marche"].map((item) => (
+              {["Notre solution", ""].map((item) => (
                 <a
                   key={item}
                   href={`#${item.toLowerCase()}`}
@@ -224,7 +224,7 @@ export default function LandingPage(): JSX.Element {
 
             <div className="mt-12 sm:display-none md:display-none">
               <Image
-                src="/screenshots/tinylms.png"
+                src="https://github.com/ariel-coda/TinyLMS/blob/main/frontend/public/screenshots/tinyLMS.PNG"
                 alt="Aperçu de la plateforme"
                 width={1200}
                 height={800}
