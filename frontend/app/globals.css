@@ -58,6 +58,10 @@ h1,h2,h3,h4{
     color: #0b3558;
 }
 
+.text-logo{
+  color:  #2b7fff;
+}
+
 label{
   font-size: 16px;
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, JSX } from "react";
+import { useRouter } from "next/navigation";
 import {
   ChevronRight,
   Database,
@@ -29,6 +30,8 @@ interface VisibilityState {
 export default function LandingPage(): JSX.Element {
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
   const [isVisible, setIsVisible] = useState<VisibilityState>({});
+
+  const router = useRouter();
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -189,7 +192,7 @@ export default function LandingPage(): JSX.Element {
       {/* Hero Section */}
       <section className="relative overflow-hidden">
         <div className="absolute inset-0 bg-white"></div>
-        <div className="relative max-w-7xl max-h-[900px] mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-16 overflow-hidden">
+        <div className="relative max-w-7xl max-h-[1000px] mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-16 overflow-hidden">
           <div className="text-center">
             <div className="inline-flex items-center space-x-2 bg-blue-50 text-blue-700 px-4 py-2 rounded-full text-sm font-medium mb-8">
               <Zap className="w-4 h-4" />
@@ -210,8 +213,11 @@ export default function LandingPage(): JSX.Element {
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-              <button className="group bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 transform  flex items-center space-x-2">
-                <span>Demarrer votre essai gratuit</span>
+              <button
+                onClick={() => router.push("./form/register")}
+                className="group bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 transform  flex items-center space-x-2"
+              >
+                <span>Démarrer votre essai gratuit</span>
                 <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </button>
             </div>
@@ -313,10 +319,18 @@ export default function LandingPage(): JSX.Element {
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button className="bg-white text-blue-700 hover:bg-gray-50 px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 transform">
+            <button
+              onClick={() => router.push("./form/register")}
+              className="bg-white text-blue-700 hover:bg-gray-50 px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 transform"
+            >
               Commencer maintenant
             </button>
-            <button className="border-2 border-white text-white hover:bg-white hover:text-blue-700 px-8 py-4 rounded-xl font-semibold text-lg">
+            <button
+              onClick={() =>
+                window.open("https://wa.me/+237653189528", "_blank")
+              }
+              className="border-2 border-white text-white hover:bg-white hover:text-blue-700 px-8 py-4 rounded-xl font-semibold text-lg"
+            >
               Planifier une démonstration
             </button>
           </div>
