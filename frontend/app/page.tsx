@@ -214,7 +214,7 @@ export default function LandingPage(): JSX.Element {
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
               <button
-                onClick={() => router.push("./form/register")}
+                onClick={() => router.push("./form/trial-register")}
                 className="group bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 transform  flex items-center space-x-2"
               >
                 <span>Démarrer votre essai gratuit</span>
@@ -320,7 +320,7 @@ export default function LandingPage(): JSX.Element {
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <button
-              onClick={() => router.push("./form/register")}
+              onClick={() => router.push("./form/trial-register")}
               className="bg-white text-blue-700 hover:bg-gray-50 px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 transform"
             >
               Commencer maintenant
