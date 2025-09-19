@@ -370,6 +370,10 @@ const Dashboard = () => {
   const [editingStudent, setEditingStudent] = useState<Student | null>(null);
   const [showStudentDetails, setShowStudentDetails] = useState(false);
   const [selectedStudent, setSelectedStudent] = useState<Student | null>(null);
+  const [showScheduleModal, setShowScheduleModal] = useState<boolean>(false);
+  const [selectedDateForScheduling, setSelectedDateForScheduling] = useState<string | null>(null);
+  const [scheduledContents, setScheduledContents] = useState<any[]>([]);
+  
 
   const router = useRouter();
 
@@ -4349,7 +4353,7 @@ const Dashboard = () => {
   };
 
 const renderSectionsContent = () => (
-  <div className="space-y-4 sm:space-y-6">
+  <div className="space-y-4 sm:space-y-2">
     {/* Header avec sélection de cours */}
     <div className="flex flex-col space-y-4 lg:flex-row lg:items-center lg:justify-between lg:space-y-0 bg-white max-w-full mx-auto px-3 sm:px-4 lg:px-8 py-4 sm:py-6 lg:py-8 shadow-xs rounded-lg">
       <div className="min-w-0 flex-1">
