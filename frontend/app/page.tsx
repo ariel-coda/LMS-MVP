@@ -122,11 +122,13 @@ export default function LandingPage(): JSX.Element {
       {/* Header */}
       <header className="bg-white/90 backdrop-blur-xl border-b border-gray-100/50 sticky top-0 z-50 transition-all duration-300">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
+          <div className="flex justify-between items-center h-16 py-10">
             <div className="flex items-center space-x-3 group">
-              <span className="text-2xl font-bold text-blue-600  bg-clip-text">
-                TinyLMS
-              </span>
+              <img
+                src="/logo_tiny.webp" // chemin de ton logo dans public/
+                alt="TinyLMS Logo"
+                className="w-24 h-24 object-contain" // ajuste la taille
+              />
             </div>
 
             <nav className="hidden md:flex space-x-8">
@@ -184,7 +186,7 @@ export default function LandingPage(): JSX.Element {
           <div className="text-center">
             <div className="inline-flex items-center space-x-2 bg-blue-50 text-blue-700 px-4 py-2 rounded-full text-sm font-medium mb-8">
               <Zap className="w-4 h-4" />
-              <span>Solution innovante pour écoles modernes</span>
+              <span>Ne perdez plus de temps entre WhatsApp, Meet et Excel</span>
             </div>
 
             <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6 leading-tight">
@@ -331,19 +333,24 @@ export default function LandingPage(): JSX.Element {
       </section>
 
       {/* Footer */}
-      <footer className="bg-gray-900 bg-blue-title py-12">
+      <footer className="bg-gray-900 bg-blue-title py-5">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="flex items-center space-x-3 mb-4 md:mb-0">
-              {/*<div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-cyan-400 rounded-lg flex items-center justify-center">
-                <Database className="w-5 h-5 text-white" />
-              </div>*/}
-              <span className="text-xl font-bold">TinyLMS</span>
+              <img
+                src="/logo_tiny.webp" // place ton logo dans /public
+                alt="Logo TinyLMS"
+                className="w-24 h-24 object-contain"
+              />
             </div>
 
             <div className="bg-blue-text text-center md:text-right">
-              <p>&copy; 2025 TinyLMS. Tous droits réservés.</p>
-              <p className="text-sm mt-1">Simplifiez. Automatisez. Excellez.</p>
+              <p className="bg-blue-text text-md">
+                &copy; 2025 TinyLMS. Tous droits réservés.
+              </p>
+              <p className="text-md mt-1 bg-blue-text">
+                Simplifiez. Automatisez. Excellez.
+              </p>
             </div>
           </div>
         </div>

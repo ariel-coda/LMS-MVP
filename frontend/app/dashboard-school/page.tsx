@@ -89,7 +89,6 @@ interface Student {
   photo?: string; // URL de la photo
 }
 
-
 interface Course {
   id: string;
   nom: string;
@@ -371,9 +370,10 @@ const Dashboard = () => {
   const [showStudentDetails, setShowStudentDetails] = useState(false);
   const [selectedStudent, setSelectedStudent] = useState<Student | null>(null);
   const [showScheduleModal, setShowScheduleModal] = useState<boolean>(false);
-  const [selectedDateForScheduling, setSelectedDateForScheduling] = useState<string | null>(null);
+  const [selectedDateForScheduling, setSelectedDateForScheduling] = useState<
+    string | null
+  >(null);
   const [scheduledContents, setScheduledContents] = useState<any[]>([]);
-  
 
   const router = useRouter();
 
@@ -2566,98 +2566,118 @@ const Dashboard = () => {
   const renderCoursesContent = () => (
     <div className="space-y-6">
       {/* Header section */}
-<div className="bg-white border-b border-gray-100">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header principal */}
-        <div className="py-6 lg:py-8">
-          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between space-y-4 lg:space-y-0">
-            
-            {/* Section titre - Responsive */}
-            <div className="flex-1 min-w-0">
-              <div className="flex flex-col sm:flex-row sm:items-center sm:space-x-4">
-                <h1 className="text-xl sm:text-2xl lg:text-3xl font-semibold text-gray-900 tracking-tight">
-                  Cours disponibles
-                </h1>
-                <div className="mt-1 sm:mt-0">
-                  <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-50 text-blue-700 border border-blue-200">
-                    {courses.length} cours actifs
-                  </span>
+      <div className="bg-white border-b border-gray-100">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Header principal */}
+          <div className="py-6 lg:py-8">
+            <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between space-y-4 lg:space-y-0">
+              {/* Section titre - Responsive */}
+              <div className="flex-1 min-w-0">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:space-x-4">
+                  <h1 className="text-xl sm:text-2xl lg:text-3xl font-semibold text-gray-900 tracking-tight">
+                    Cours disponibles
+                  </h1>
+                  <div className="mt-1 sm:mt-0">
+                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-50 text-blue-700 border border-blue-200">
+                      {courses.length} cours actifs
+                    </span>
+                  </div>
                 </div>
+
+                <p className="mt-2 text-sm sm:text-base text-gray-600 max-w-2xl">
+                  Gérez vos contenus pédagogiques, sections et ressources
+                  d'apprentissage
+                </p>
               </div>
-              
-              <p className="mt-2 text-sm sm:text-base text-gray-600 max-w-2xl">
-                Gérez vos contenus pédagogiques, sections et ressources d'apprentissage
-              </p>
-            </div>
 
-            {/* Actions - Responsive */}
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center space-y-3 sm:space-y-0 sm:space-x-3 lg:flex-shrink-0">
-              
-
-              {/* Bouton principal */}
-              <button
-                onClick={() => setShowCourseForm(true)}
-                className="inline-flex items-center justify-center px-4 sm:px-6 py-2.5 sm:py-3 text-sm sm:text-base font-medium text-white bg-blue-600 border border-transparent rounded-lg shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200 hover:shadow-md"
-              >
-                <Plus className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
-                <span className="whitespace-nowrap">Nouveau cours</span>
-              </button>
+              {/* Actions - Responsive */}
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center space-y-3 sm:space-y-0 sm:space-x-3 lg:flex-shrink-0">
+                {/* Bouton principal */}
+                <button
+                  onClick={() => setShowCourseForm(true)}
+                  className="inline-flex items-center justify-center px-4 sm:px-6 py-2.5 sm:py-3 text-sm sm:text-base font-medium text-white bg-blue-600 border border-transparent rounded-lg shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200 hover:shadow-md"
+                >
+                  <Plus className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
+                  <span className="whitespace-nowrap">Nouveau cours</span>
+                </button>
+              </div>
             </div>
           </div>
-        </div>
 
-        {/* Barre de navigation/filtres - Mobile friendly */}
-        <div className="border-t border-gray-100 py-4">
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-4 sm:space-y-0">
-            
-            {/* Filtres/Tabs */}
-            <nav className="flex space-x-1 bg-gray-100 rounded-lg p-1" aria-label="Tabs">
-              {['Tous', 'Actifs', 'Brouillons'].map((tab, index) => (
-                <button
-                  key={tab}
-                  className={`px-3 py-2 text-sm font-medium rounded-md transition-colors duration-200 ${
-                    index === 0
-                      ? 'bg-white text-gray-900 shadow-sm'
-                      : 'text-gray-600 hover:text-gray-900 hover:bg-white/50'
-                  }`}
-                >
-                  {tab}
-                  {index === 0 && (
-                    <span className="ml-2 inline-flex items-center px-1.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-600">
-                      {courses.length}
-                    </span>
-                  )}
-                </button>
-              ))}
-            </nav>
+          {/* Barre de navigation/filtres - Mobile friendly */}
+          <div className="border-t border-gray-100 py-4">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-4 sm:space-y-0">
+              {/* Filtres/Tabs */}
+              <nav
+                className="flex space-x-1 bg-gray-100 rounded-lg p-1"
+                aria-label="Tabs"
+              >
+                {["Tous", "Actifs", "Brouillons"].map((tab, index) => (
+                  <button
+                    key={tab}
+                    className={`px-3 py-2 text-sm font-medium rounded-md transition-colors duration-200 ${
+                      index === 0
+                        ? "bg-white text-gray-900 shadow-sm"
+                        : "text-gray-600 hover:text-gray-900 hover:bg-white/50"
+                    }`}
+                  >
+                    {tab}
+                    {index === 0 && (
+                      <span className="ml-2 inline-flex items-center px-1.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-600">
+                        {courses.length}
+                      </span>
+                    )}
+                  </button>
+                ))}
+              </nav>
 
-            {/* Actions secondaires */}
-            <div className="flex items-center space-x-3">
-              {/* Recherche mobile-friendly */}
-              <div className="relative">
-                <input
-                  type="text"
-                  placeholder="Rechercher..."
-                  className="w-full sm:w-64 pl-3 pr-10 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white"
-                />
-                <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
-                  <svg className="h-4 w-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                  </svg>
+              {/* Actions secondaires */}
+              <div className="flex items-center space-x-3">
+                {/* Recherche mobile-friendly */}
+                <div className="relative">
+                  <input
+                    type="text"
+                    placeholder="Rechercher..."
+                    className="w-full sm:w-64 pl-3 pr-10 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white"
+                  />
+                  <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                    <svg
+                      className="h-4 w-4 text-gray-400"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                      />
+                    </svg>
+                  </div>
                 </div>
-              </div>
 
-              {/* Menu options - Visible sur mobile avec icône */}
-              <button className="lg:hidden p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-colors">
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
-                </svg>
-              </button>
+                {/* Menu options - Visible sur mobile avec icône */}
+                <button className="lg:hidden p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-colors">
+                  <svg
+                    className="w-5 h-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"
+                    />
+                  </svg>
+                </button>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
       {courses.length === 0 ? (
         /* État vide */
         <div className="text-center py-12">
@@ -4352,467 +4372,572 @@ const Dashboard = () => {
     setShowEditSectionForm(true);
   };
 
-const renderSectionsContent = () => (
-  <div className="space-y-4 sm:space-y-2">
-    {/* Header avec sélection de cours */}
-    <div className="flex flex-col space-y-4 lg:flex-row lg:items-center lg:justify-between lg:space-y-0 bg-white max-w-full mx-auto px-3 sm:px-4 lg:px-8 py-4 sm:py-6 lg:py-8 shadow-xs rounded-lg">
-      <div className="min-w-0 flex-1">
-        <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 truncate">Section de cours</h1>
-        <p className="mt-1 sm:mt-2 text-sm sm:text-base text-gray-600">Organisez et structurez votre contenu pédagogique</p>
-      </div>
-
-      <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 w-full sm:w-auto">
-        {/* Sélecteur de cours */}
-        <select
-          value={selectedCourse?.id || " "}
-          onChange={(e) => {
-            const course = courses.find((c) => c.id === e.target.value);
-            setSelectedCourse(course || null);
-          }}
-          className="w-full sm:w-48 px-3 py-2 text-sm sm:text-base border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white"
-        >
-          {courses.map((course) => (
-            <option key={course.id} value={course.id}>
-              {course.nom}
-            </option>
-          ))}
-        </select>
-
-        <button
-          onClick={() => setShowSectionForm(true)}
-          disabled={!selectedCourse}
-          className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed text-white px-4 py-2 rounded-md text-sm sm:text-base font-medium transition-colors flex items-center justify-center gap-2"
-        >
-          <Plus size={16} className="sm:w-[18px] sm:h-[18px]" />
-          <span className="truncate">Nouvelle section</span>
-        </button>
-      </div>
-    </div>
-
-    {!selectedCourse ? (
-      /* État de sélection de cours */
-      <div className="text-center py-12 sm:py-16 px-4">
-        <div className="w-12 h-12 sm:w-16 sm:h-16 bg-blue-50 rounded-2xl flex items-center justify-center mx-auto mb-3 sm:mb-4">
-          <BookOpen className="w-6 h-6 sm:w-8 sm:h-8 text-blue-500" />
+  const renderSectionsContent = () => (
+    <div className="space-y-4 sm:space-y-2">
+      {/* Header avec sélection de cours */}
+      <div className="flex flex-col space-y-4 lg:flex-row lg:items-center lg:justify-between lg:space-y-0 bg-white max-w-full mx-auto px-3 sm:px-4 lg:px-8 py-4 sm:py-6 lg:py-8 shadow-xs rounded-lg">
+        <div className="min-w-0 flex-1">
+          <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 truncate">
+            Section de cours
+          </h1>
+          <p className="mt-1 sm:mt-2 text-sm sm:text-base text-gray-600">
+            Organisez et structurez votre contenu pédagogique
+          </p>
         </div>
-        <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-2">
-          Sélectionnez un cours
-        </h3>
-        <p className="text-sm sm:text-base text-gray-600 mb-4 sm:mb-6 max-w-sm mx-auto">
-          Choisissez un cours dans la liste ci-dessus pour voir ses sections
-          ou en créer de nouvelles.
-        </p>
-      </div>
-    ) : sections.length === 0 ? (
-      /* État vide pour le cours sélectionné */
-      <div className="text-center py-12 sm:py-16 px-4">
-        <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gray-50 border-2 border-dashed border-gray-300 rounded-2xl flex items-center justify-center mx-auto mb-3 sm:mb-4">
-          <FileText className="w-6 h-6 sm:w-8 sm:h-8 text-gray-400" />
+
+        <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 w-full sm:w-auto">
+          {/* Sélecteur de cours */}
+          <select
+            value={selectedCourse?.id || " "}
+            onChange={(e) => {
+              const course = courses.find((c) => c.id === e.target.value);
+              setSelectedCourse(course || null);
+            }}
+            className="w-full sm:w-48 px-3 py-2 text-sm sm:text-base border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white"
+          >
+            {courses.map((course) => (
+              <option key={course.id} value={course.id}>
+                {course.nom}
+              </option>
+            ))}
+          </select>
+
+          <button
+            onClick={() => setShowSectionForm(true)}
+            disabled={!selectedCourse}
+            className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed text-white px-4 py-2 rounded-md text-sm sm:text-base font-medium transition-colors flex items-center justify-center gap-2"
+          >
+            <Plus size={16} className="sm:w-[18px] sm:h-[18px]" />
+            <span className="truncate">Nouvelle section</span>
+          </button>
         </div>
-        <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-2">
-          Aucune section pour ce cours
-        </h3>
-        <p className="text-sm sm:text-base text-gray-600 mb-4 sm:mb-6 max-w-sm mx-auto">
-          Créez la première section de "{selectedCourse.nom}" avec du contenu
-          PDF ou vidéo.
-        </p>
-        <button
-          onClick={() => setShowSectionForm(true)}
-          className="bg-blue-600 hover:bg-blue-700 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-md text-sm sm:text-base font-medium transition-colors"
-        >
-          Créer une section
-        </button>
       </div>
-    ) : (
-      /* Interface avec design minimaliste et responsive optimisé */
-      <div className="min-h-screen bg-gray-50">
-        {/* Contenu principal avec espacement approprié */}
-        <div className="w-full max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-4 sm:py-6 lg:py-8 space-y-4 sm:space-y-6 lg:space-y-8">
-          {/* En-tête du cours sélectionné - Design épuré */}
-          {selectedCourse && (
-            <div className="bg-white rounded-lg border border-gray-200 p-4 sm:p-6 lg:p-8 w-full">
-              <div className="flex flex-col space-y-4 lg:flex-row lg:items-start lg:justify-between lg:space-y-0 lg:space-x-8">
-                <div className="flex-1 min-w-0">
-                  <div className="flex flex-col space-y-2 sm:flex-row sm:items-center sm:space-y-0 sm:space-x-4">
-                    <h2 className="text-lg sm:text-xl lg:text-2xl font-semibold text-gray-900 truncate">
-                      {selectedCourse.nom}
-                    </h2>
-                    <span className="inline-flex items-center px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm bg-gray-100 text-gray-700 w-fit">
-                      {sections.length} section{sections.length > 1 ? 's' : ''}
-                    </span>
+
+      {!selectedCourse ? (
+        /* État de sélection de cours */
+        <div className="text-center py-12 sm:py-16 px-4">
+          <div className="w-12 h-12 sm:w-16 sm:h-16 bg-blue-50 rounded-2xl flex items-center justify-center mx-auto mb-3 sm:mb-4">
+            <BookOpen className="w-6 h-6 sm:w-8 sm:h-8 text-blue-500" />
+          </div>
+          <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-2">
+            Sélectionnez un cours
+          </h3>
+          <p className="text-sm sm:text-base text-gray-600 mb-4 sm:mb-6 max-w-sm mx-auto">
+            Choisissez un cours dans la liste ci-dessus pour voir ses sections
+            ou en créer de nouvelles.
+          </p>
+        </div>
+      ) : sections.length === 0 ? (
+        /* État vide pour le cours sélectionné */
+        <div className="text-center py-12 sm:py-16 px-4">
+          <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gray-50 border-2 border-dashed border-gray-300 rounded-2xl flex items-center justify-center mx-auto mb-3 sm:mb-4">
+            <FileText className="w-6 h-6 sm:w-8 sm:h-8 text-gray-400" />
+          </div>
+          <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-2">
+            Aucune section pour ce cours
+          </h3>
+          <p className="text-sm sm:text-base text-gray-600 mb-4 sm:mb-6 max-w-sm mx-auto">
+            Créez la première section de "{selectedCourse.nom}" avec du contenu
+            PDF ou vidéo.
+          </p>
+          <button
+            onClick={() => setShowSectionForm(true)}
+            className="bg-blue-600 hover:bg-blue-700 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-md text-sm sm:text-base font-medium transition-colors"
+          >
+            Créer une section
+          </button>
+        </div>
+      ) : (
+        /* Interface avec design minimaliste et responsive optimisé */
+        <div className="min-h-screen bg-gray-50">
+          {/* Contenu principal avec espacement approprié */}
+          <div className="w-full max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-4 sm:py-6 lg:py-8 space-y-4 sm:space-y-6 lg:space-y-8">
+            {/* En-tête du cours sélectionné - Design épuré */}
+            {selectedCourse && (
+              <div className="bg-white rounded-lg border border-gray-200 p-4 sm:p-6 lg:p-8 w-full">
+                <div className="flex flex-col space-y-4 lg:flex-row lg:items-start lg:justify-between lg:space-y-0 lg:space-x-8">
+                  <div className="flex-1 min-w-0">
+                    <div className="flex flex-col space-y-2 sm:flex-row sm:items-center sm:space-y-0 sm:space-x-4">
+                      <h2 className="text-lg sm:text-xl lg:text-2xl font-semibold text-gray-900 truncate">
+                        {selectedCourse.nom}
+                      </h2>
+                      <span className="inline-flex items-center px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm bg-gray-100 text-gray-700 w-fit">
+                        {sections.length} section
+                        {sections.length > 1 ? "s" : ""}
+                      </span>
+                    </div>
+                    <p className="mt-1 sm:mt-2 text-xs sm:text-sm lg:text-base text-gray-600">
+                      {selectedCourse.duration}h de contenu • Mis à jour
+                      récemment
+                    </p>
                   </div>
-                  <p className="mt-1 sm:mt-2 text-xs sm:text-sm lg:text-base text-gray-600">
-                    {selectedCourse.duration}h de contenu • Mis à jour récemment
-                  </p>
-                </div>
 
-                {/* Actions simplifiées */}
-                <div className="flex flex-row gap-2 text-xs sm:text-sm">
-                  <button
-                    onClick={() => setCollapsedSections(new Set())}
-                    className="px-2 sm:px-3 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-md transition-colors whitespace-nowrap"
-                  >
-                    Tout déplier
-                  </button>
-                  <button
-                    onClick={() => setCollapsedSections(new Set(sections.map((s) => s.id)))}
-                    className="px-2 sm:px-3 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-md transition-colors whitespace-nowrap"
-                  >
-                    Tout replier
-                  </button>
+                  {/* Actions simplifiées */}
+                  <div className="flex flex-row gap-2 text-xs sm:text-sm">
+                    <button
+                      onClick={() => setCollapsedSections(new Set())}
+                      className="px-2 sm:px-3 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-md transition-colors whitespace-nowrap"
+                    >
+                      Tout déplier
+                    </button>
+                    <button
+                      onClick={() =>
+                        setCollapsedSections(new Set(sections.map((s) => s.id)))
+                      }
+                      className="px-2 sm:px-3 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-md transition-colors whitespace-nowrap"
+                    >
+                      Tout replier
+                    </button>
+                  </div>
                 </div>
               </div>
-            </div>
-          )}
+            )}
 
-          {/* Liste des sections - Design minimaliste */}
-          <div className="space-y-4 sm:space-y-6 w-full">
-            {sections.map((section, index) => {
-              const isCollapsed = isSectionCollapsed(section.id);
-              const sectionExercises = getExercisesForSection(section.id);
+            {/* Liste des sections - Design minimaliste */}
+            <div className="space-y-4 sm:space-y-6 w-full">
+              {sections.map((section, index) => {
+                const isCollapsed = isSectionCollapsed(section.id);
+                const sectionExercises = getExercisesForSection(section.id);
 
-              return (
-                <div
-                  key={section.id}
-                  className="bg-white rounded-lg border border-gray-200 w-full"
-                >
-                  {/* Header section épuré */}
+                return (
                   <div
-                    className="p-3 sm:p-4 lg:p-6 cursor-pointer hover:bg-gray-50 transition-colors"
-                    onClick={() => toggleSection(section.id)}
+                    key={section.id}
+                    className="bg-white rounded-lg border border-gray-200 w-full"
                   >
-                    <div className="flex items-center space-x-2 sm:space-x-3 lg:space-x-4">
-                      {/* Indicateur d'expansion */}
-                      <button className="p-1 hover:bg-gray-100 rounded transition-colors flex-shrink-0">
-                        {isCollapsed ? (
-                          <ChevronRight size={16} className="sm:w-[18px] sm:h-[18px] text-gray-400" />
-                        ) : (
-                          <ChevronDown size={16} className="sm:w-[18px] sm:h-[18px] text-gray-400" />
-                        )}
-                      </button>
-
-                      {/* Numéro de section minimaliste */}
-                      <div className="w-6 h-6 sm:w-8 sm:h-8 bg-blue-600 rounded-lg flex items-center justify-center flex-shrink-0">
-                        <span className="text-xs sm:text-sm font-semibold text-white">
-                          {section.ordre}
-                        </span>
-                      </div>
-
-                      {/* Titre et métadonnées */}
-                      <div className="flex-1 min-w-0">
-                        <h3 className="text-sm sm:text-base lg:text-lg font-medium text-gray-900 truncate">
-                          {section.nom}
-                        </h3>
-                        
-                        {/* Indicateurs simplifiés */}
-                        <div className="flex items-center space-x-2 sm:space-x-3 lg:space-x-4 mt-1 text-xs sm:text-sm text-gray-500">
-                          {section.has_video && (
-                            <span className="flex items-center space-x-1">
-                              <PlayCircle size={12} className="sm:w-[14px] sm:h-[14px]" />
-                              <span className="hidden xs:inline">Vidéo</span>
-                            </span>
+                    {/* Header section épuré */}
+                    <div
+                      className="p-3 sm:p-4 lg:p-6 cursor-pointer hover:bg-gray-50 transition-colors"
+                      onClick={() => toggleSection(section.id)}
+                    >
+                      <div className="flex items-center space-x-2 sm:space-x-3 lg:space-x-4">
+                        {/* Indicateur d'expansion */}
+                        <button className="p-1 hover:bg-gray-100 rounded transition-colors flex-shrink-0">
+                          {isCollapsed ? (
+                            <ChevronRight
+                              size={16}
+                              className="sm:w-[18px] sm:h-[18px] text-gray-400"
+                            />
+                          ) : (
+                            <ChevronDown
+                              size={16}
+                              className="sm:w-[18px] sm:h-[18px] text-gray-400"
+                            />
                           )}
-                          {section.has_pdf && (
-                            <span className="flex items-center space-x-1">
-                              <FileText size={12} className="sm:w-[14px] sm:h-[14px]" />
-                              <span className="hidden xs:inline">Document</span>
-                            </span>
-                          )}
-                          {sectionExercises.length > 0 && (
-                            <span className="flex items-center space-x-1">
-                              <PenTool size={12} className="sm:w-[14px] sm:h-[14px]" />
-                              <span>{sectionExercises.length} ex.</span>
-                            </span>
-                          )}
-                        </div>
-                      </div>
-
-                      {/* Actions compactes */}
-                      <div
-                        className="flex items-center space-x-1 flex-shrink-0"
-                        onClick={(e) => e.stopPropagation()}
-                      >
-                        <button
-                          onClick={() => handleAddExercice(section)}
-                          className="hidden sm:flex items-center px-2 sm:px-3 py-1 sm:py-2 text-xs sm:text-sm text-blue-600 bg-blue-50 hover:bg-blue-100 rounded-md transition-colors whitespace-nowrap"
-                        >
-                          <Plus size={12} className="sm:w-[14px] sm:h-[14px] mr-1" />
-                          Exercice
                         </button>
 
-                        {/* Menu actions mobile/desktop */}
-                        <div className="flex items-center">
+                        {/* Numéro de section minimaliste */}
+                        <div className="w-6 h-6 sm:w-8 sm:h-8 bg-blue-600 rounded-lg flex items-center justify-center flex-shrink-0">
+                          <span className="text-xs sm:text-sm font-semibold text-white">
+                            {section.ordre}
+                          </span>
+                        </div>
+
+                        {/* Titre et métadonnées */}
+                        <div className="flex-1 min-w-0">
+                          <h3 className="text-sm sm:text-base lg:text-lg font-medium text-gray-900 truncate">
+                            {section.nom}
+                          </h3>
+
+                          {/* Indicateurs simplifiés */}
+                          <div className="flex items-center space-x-2 sm:space-x-3 lg:space-x-4 mt-1 text-xs sm:text-sm text-gray-500">
+                            {section.has_video && (
+                              <span className="flex items-center space-x-1">
+                                <PlayCircle
+                                  size={12}
+                                  className="sm:w-[14px] sm:h-[14px]"
+                                />
+                                <span className="hidden xs:inline">Vidéo</span>
+                              </span>
+                            )}
+                            {section.has_pdf && (
+                              <span className="flex items-center space-x-1">
+                                <FileText
+                                  size={12}
+                                  className="sm:w-[14px] sm:h-[14px]"
+                                />
+                                <span className="hidden xs:inline">
+                                  Document
+                                </span>
+                              </span>
+                            )}
+                            {sectionExercises.length > 0 && (
+                              <span className="flex items-center space-x-1">
+                                <PenTool
+                                  size={12}
+                                  className="sm:w-[14px] sm:h-[14px]"
+                                />
+                                <span>{sectionExercises.length} ex.</span>
+                              </span>
+                            )}
+                          </div>
+                        </div>
+
+                        {/* Actions compactes */}
+                        <div
+                          className="flex items-center space-x-1 flex-shrink-0"
+                          onClick={(e) => e.stopPropagation()}
+                        >
                           <button
-                            onClick={() => handleEditSection(section)}
-                            className="p-1.5 sm:p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-md transition-colors"
+                            onClick={() => handleAddExercice(section)}
+                            className="hidden sm:flex items-center px-2 sm:px-3 py-1 sm:py-2 text-xs sm:text-sm text-blue-600 bg-blue-50 hover:bg-blue-100 rounded-md transition-colors whitespace-nowrap"
                           >
-                            <Pencil size={14} className="sm:w-4 sm:h-4" />
+                            <Plus
+                              size={12}
+                              className="sm:w-[14px] sm:h-[14px] mr-1"
+                            />
+                            Exercice
                           </button>
-                          <button
-                            onClick={() => handleDeleteSection(section.id)}
-                            className="p-1.5 sm:p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-md transition-colors"
-                          >
-                            <Trash2 size={14} className="sm:w-4 sm:h-4" />
-                          </button>
+
+                          {/* Menu actions mobile/desktop */}
+                          <div className="flex items-center">
+                            <button
+                              onClick={() => handleEditSection(section)}
+                              className="p-1.5 sm:p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-md transition-colors"
+                            >
+                              <Pencil size={14} className="sm:w-4 sm:h-4" />
+                            </button>
+                            <button
+                              onClick={() => handleDeleteSection(section.id)}
+                              className="p-1.5 sm:p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-md transition-colors"
+                            >
+                              <Trash2 size={14} className="sm:w-4 sm:h-4" />
+                            </button>
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
 
-                  {/* Contenu détaillé */}
-                  {!isCollapsed && (
-                    <div className="border-t border-gray-100 p-3 sm:p-4 lg:p-6 space-y-4 sm:space-y-6 w-full">
-                      {/* Description - Responsive text */}
-                      {section.description && (
-                        <div className="text-gray-600 text-xs sm:text-sm leading-relaxed break-words">
-                          {section.description}
-                        </div>
-                      )}
-
-                      {/* Contenu multimédia - Responsive spacing */}
-                      <div className="space-y-4 sm:space-y-6">
-                        {/* Vidéo - Responsive aspect ratio */}
-                        {section.has_video && (
-                          <div className="space-y-2 sm:space-y-3">
-                            <div className="flex items-center space-x-2 text-xs sm:text-sm font-medium text-gray-900">
-                              <PlayCircle size={12} className="sm:w-4 sm:h-4 text-purple-600 flex-shrink-0" />
-                              <span className="truncate">{getVideoFileName(section)}</span>
-                            </div>
-                            <div className="rounded-lg overflow-hidden bg-gray-900 w-full">
-                              <video
-                                controls
-                                controlsList="nodownload"
-                                preload="metadata"
-                                className="w-full aspect-video object-cover"
-                              >
-                                <source
-                                  src={getVideoUrl(section) ?? "undefined.mp4"}
-                                  type="video/mp4"
-                                />
-                                Votre navigateur ne supporte pas la lecture vidéo.
-                              </video>
-                            </div>
+                    {/* Contenu détaillé */}
+                    {!isCollapsed && (
+                      <div className="border-t border-gray-100 p-3 sm:p-4 lg:p-6 space-y-4 sm:space-y-6 w-full">
+                        {/* Description - Responsive text */}
+                        {section.description && (
+                          <div className="text-gray-600 text-xs sm:text-sm leading-relaxed break-words">
+                            {section.description}
                           </div>
                         )}
 
-                        {/* Document PDF - Mobile optimized */}
-                        {section.has_pdf && (
-                          <div className="space-y-2 sm:space-y-3">
-                            <div className="flex items-center space-x-2 text-xs sm:text-sm font-medium text-gray-900">
-                              <FileText size={12} className="sm:w-4 sm:h-4 text-red-600 flex-shrink-0" />
-                              <span>Document</span>
-                            </div>
-                            <div className="bg-gray-50 rounded-lg p-3 sm:p-4 w-full">
-                              <div className="flex items-center justify-between gap-2 sm:gap-3 min-w-0">
-                                <div className="flex items-center space-x-2 sm:space-x-3 flex-1 min-w-0">
-                                  <div className="w-8 h-8 sm:w-10 sm:h-10 bg-red-500 rounded-lg flex items-center justify-center flex-shrink-0">
-                                    <FileText size={14} className="sm:w-5 sm:h-5 text-white" />
-                                  </div>
-                                  <div className="flex-1 min-w-0">
-                                    <p className="font-medium text-gray-900 truncate text-xs sm:text-sm">
-                                      {getPdfFileName(section)}
-                                    </p>
-                                    <p className="text-xs text-gray-500">PDF</p>
-                                  </div>
-                                </div>
-                                <div className="flex items-center space-x-1 flex-shrink-0">
-                                  <button
-                                    onClick={() => {
-                                      const pdfUrl = getPdfUrl(section);
-                                      if (pdfUrl) {
-                                        handleDownloadFile(
-                                          pdfUrl,
-                                          getPdfFileName(section) || "document.pdf"
-                                        );
-                                      }
-                                    }}
-                                    className="p-1.5 sm:p-2 text-gray-500 hover:text-gray-700 hover:bg-white rounded-md transition-colors"
-                                  >
-                                    <Eye size={12} className="sm:w-4 sm:h-4" />
-                                  </button>
-                                  <button
-                                    onClick={() => handledeletePDFSection(section)}
-                                    className="p-1.5 sm:p-2 text-gray-500 hover:text-red-500 hover:bg-white rounded-md transition-colors"
-                                  >
-                                    <Trash2 size={12} className="sm:w-4 sm:h-4" />
-                                  </button>
-                                </div>
+                        {/* Contenu multimédia - Responsive spacing */}
+                        <div className="space-y-4 sm:space-y-6">
+                          {/* Vidéo - Responsive aspect ratio */}
+                          {section.has_video && (
+                            <div className="space-y-2 sm:space-y-3">
+                              <div className="flex items-center space-x-2 text-xs sm:text-sm font-medium text-gray-900">
+                                <PlayCircle
+                                  size={12}
+                                  className="sm:w-4 sm:h-4 text-purple-600 flex-shrink-0"
+                                />
+                                <span className="truncate">
+                                  {getVideoFileName(section)}
+                                </span>
+                              </div>
+                              <div className="rounded-lg overflow-hidden bg-gray-900 w-full">
+                                <video
+                                  controls
+                                  controlsList="nodownload"
+                                  preload="metadata"
+                                  className="w-full aspect-video object-cover"
+                                >
+                                  <source
+                                    src={
+                                      getVideoUrl(section) ?? "undefined.mp4"
+                                    }
+                                    type="video/mp4"
+                                  />
+                                  Votre navigateur ne supporte pas la lecture
+                                  vidéo.
+                                </video>
                               </div>
                             </div>
-                          </div>
-                        )}
+                          )}
 
-                        {/* État vide - Responsive buttons */}
-                        {!section.has_pdf && !section.has_video && (
-                          <div className="text-center py-6 sm:py-8 border border-dashed border-gray-300 rounded-lg">
-                            <FileText className="w-6 h-6 sm:w-8 sm:h-8 text-gray-400 mx-auto mb-2 sm:mb-3" />
-                            <p className="text-xs sm:text-sm text-gray-500 mb-3 sm:mb-4">
-                              Aucun contenu dans cette section
-                            </p>
-                            <div className="flex flex-col sm:flex-row justify-center gap-2">
-                              <button
-                                onClick={() => handleEditSection(section)}
-                                className="px-3 py-2 text-xs sm:text-sm text-purple-600 bg-purple-50 hover:bg-purple-100 rounded-md transition-colors"
-                              >
-                                Ajouter vidéo
-                              </button>
-                              <button
-                                onClick={() => handleEditSection(section)}
-                                className="px-3 py-2 text-xs sm:text-sm text-gray-600 bg-gray-100 hover:bg-gray-200 rounded-md transition-colors"
-                              >
-                                Ajouter document
-                              </button>
-                            </div>
-                          </div>
-                        )}
-                      </div>
-
-                      {/* Exercices - Fully responsive */}
-                      {sectionExercises.length > 0 && (
-                        <div className="space-y-2 sm:space-y-3">
-                          <div className="flex items-center space-x-2 text-xs sm:text-sm font-medium text-gray-900">
-                            <PenTool size={12} className="sm:w-4 sm:h-4 text-green-600 flex-shrink-0" />
-                            <span>Exercices ({sectionExercises.length})</span>
-                          </div>
-                          <div className="space-y-2 w-full">
-                            {sectionExercises.map((exercise) => (
-                              <div
-                                key={exercise.id}
-                                className="bg-gray-50 rounded-lg p-3 sm:p-4 hover:bg-gray-100 transition-colors w-full"
-                              >
+                          {/* Document PDF - Mobile optimized */}
+                          {section.has_pdf && (
+                            <div className="space-y-2 sm:space-y-3">
+                              <div className="flex items-center space-x-2 text-xs sm:text-sm font-medium text-gray-900">
+                                <FileText
+                                  size={12}
+                                  className="sm:w-4 sm:h-4 text-red-600 flex-shrink-0"
+                                />
+                                <span>Document</span>
+                              </div>
+                              <div className="bg-gray-50 rounded-lg p-3 sm:p-4 w-full">
                                 <div className="flex items-center justify-between gap-2 sm:gap-3 min-w-0">
                                   <div className="flex items-center space-x-2 sm:space-x-3 flex-1 min-w-0">
-                                    <div className={`w-6 h-6 sm:w-8 sm:h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${
-                                      exercise.type === "pdf" ? "bg-red-500" :
-                                      exercise.type === "qcm" ? "bg-blue-500" : "bg-green-500"
-                                    }`}>
-                                      {exercise.type === "pdf" && <FileText size={10} className="sm:w-4 sm:h-4 text-white" />}
-                                      {exercise.type === "qcm" && <CheckCircle size={10} className="sm:w-4 sm:h-4 text-white" />}
-                                      {exercise.type === "qro" && <Edit3 size={10} className="sm:w-4 sm:h-4 text-white" />}
+                                    <div className="w-8 h-8 sm:w-10 sm:h-10 bg-red-500 rounded-lg flex items-center justify-center flex-shrink-0">
+                                      <FileText
+                                        size={14}
+                                        className="sm:w-5 sm:h-5 text-white"
+                                      />
                                     </div>
-                                    
                                     <div className="flex-1 min-w-0">
-                                      <div className="flex flex-col sm:flex-row sm:items-center sm:space-x-2 space-y-1 sm:space-y-0">
-                                        <p className="font-medium text-gray-900 truncate text-xs sm:text-sm">
-                                          {exercise.nom}
-                                        </p>
-                                        <span className={`px-2 py-0.5 sm:py-1 rounded-full text-xs font-medium w-fit ${
-                                          exercise.type === "pdf" ? "bg-red-100 text-red-700" :
-                                          exercise.type === "qcm" ? "bg-blue-100 text-blue-700" : 
-                                          "bg-green-100 text-green-700"
-                                        }`}>
-                                          {exercise.type.toUpperCase()}
-                                        </span>
-                                      </div>
-                                      
-                                      {(exercise.duree_minutes || exercise.questions_count) && (
-                                        <div className="flex flex-wrap items-center gap-2 sm:gap-3 text-xs text-gray-500 mt-1">
-                                          {exercise.duree_minutes && (
-                                            <span className="flex items-center space-x-1">
-                                              <Clock size={10} className="flex-shrink-0" />
-                                              <span>{exercise.duree_minutes} min</span>
-                                            </span>
-                                          )}
-                                          {exercise.questions_count && (
-                                            <span>{exercise.questions_count} questions</span>
-                                          )}
-                                        </div>
-                                      )}
+                                      <p className="font-medium text-gray-900 truncate text-xs sm:text-sm">
+                                        {getPdfFileName(section)}
+                                      </p>
+                                      <p className="text-xs text-gray-500">
+                                        PDF
+                                      </p>
                                     </div>
                                   </div>
-
                                   <div className="flex items-center space-x-1 flex-shrink-0">
-                                    {exercise.type === "pdf" && (
-                                      <button
-                                        onClick={() => handleDownloadExercise(exercise)}
-                                        className="p-1.5 sm:p-2 text-gray-400 hover:text-gray-600 hover:bg-white rounded-md transition-colors"
-                                      >
-                                        <Eye size={12} className="sm:w-4 sm:h-4" />
-                                      </button>
-                                    )}
                                     <button
-                                      onClick={() => openEditExerciseForm(exercise)}
-                                      className="p-1.5 sm:p-2 text-gray-400 hover:text-gray-600 hover:bg-white rounded-md transition-colors"
+                                      onClick={() => {
+                                        const pdfUrl = getPdfUrl(section);
+                                        if (pdfUrl) {
+                                          handleDownloadFile(
+                                            pdfUrl,
+                                            getPdfFileName(section) ||
+                                              "document.pdf"
+                                          );
+                                        }
+                                      }}
+                                      className="p-1.5 sm:p-2 text-gray-500 hover:text-gray-700 hover:bg-white rounded-md transition-colors"
                                     >
-                                      <Pencil size={12} className="sm:w-4 sm:h-4" />
+                                      <Eye
+                                        size={12}
+                                        className="sm:w-4 sm:h-4"
+                                      />
                                     </button>
                                     <button
-                                      onClick={() => handleDeleteExercise(exercise.id)}
-                                      className="p-1.5 sm:p-2 text-gray-400 hover:text-red-500 hover:bg-white rounded-md transition-colors"
+                                      onClick={() =>
+                                        handledeletePDFSection(section)
+                                      }
+                                      className="p-1.5 sm:p-2 text-gray-500 hover:text-red-500 hover:bg-white rounded-md transition-colors"
                                     >
-                                      <Trash2 size={12} className="sm:w-4 sm:h-4" />
+                                      <Trash2
+                                        size={12}
+                                        className="sm:w-4 sm:h-4"
+                                      />
                                     </button>
                                   </div>
                                 </div>
                               </div>
-                            ))}
-                          </div>
+                            </div>
+                          )}
+
+                          {/* État vide - Responsive buttons */}
+                          {!section.has_pdf && !section.has_video && (
+                            <div className="text-center py-6 sm:py-8 border border-dashed border-gray-300 rounded-lg">
+                              <FileText className="w-6 h-6 sm:w-8 sm:h-8 text-gray-400 mx-auto mb-2 sm:mb-3" />
+                              <p className="text-xs sm:text-sm text-gray-500 mb-3 sm:mb-4">
+                                Aucun contenu dans cette section
+                              </p>
+                              <div className="flex flex-col sm:flex-row justify-center gap-2">
+                                <button
+                                  onClick={() => handleEditSection(section)}
+                                  className="px-3 py-2 text-xs sm:text-sm text-purple-600 bg-purple-50 hover:bg-purple-100 rounded-md transition-colors"
+                                >
+                                  Ajouter vidéo
+                                </button>
+                                <button
+                                  onClick={() => handleEditSection(section)}
+                                  className="px-3 py-2 text-xs sm:text-sm text-gray-600 bg-gray-100 hover:bg-gray-200 rounded-md transition-colors"
+                                >
+                                  Ajouter document
+                                </button>
+                              </div>
+                            </div>
+                          )}
                         </div>
-                      )}
 
-                      {/* Bouton mobile pour ajouter exercice - Always visible on mobile */}
-                      <div className="sm:hidden pt-3 border-t border-gray-100">
-                        <button
-                          onClick={() => handleAddExercice(section)}
-                          className="w-full flex items-center justify-center px-4 py-2 text-xs text-blue-600 bg-blue-50 hover:bg-blue-100 rounded-lg transition-colors"
-                        >
-                          <Plus size={14} className="mr-2" />
-                          Ajouter un exercice
-                        </button>
+                        {/* Exercices - Fully responsive */}
+                        {sectionExercises.length > 0 && (
+                          <div className="space-y-2 sm:space-y-3">
+                            <div className="flex items-center space-x-2 text-xs sm:text-sm font-medium text-gray-900">
+                              <PenTool
+                                size={12}
+                                className="sm:w-4 sm:h-4 text-green-600 flex-shrink-0"
+                              />
+                              <span>Exercices ({sectionExercises.length})</span>
+                            </div>
+                            <div className="space-y-2 w-full">
+                              {sectionExercises.map((exercise) => (
+                                <div
+                                  key={exercise.id}
+                                  className="bg-gray-50 rounded-lg p-3 sm:p-4 hover:bg-gray-100 transition-colors w-full"
+                                >
+                                  <div className="flex items-center justify-between gap-2 sm:gap-3 min-w-0">
+                                    <div className="flex items-center space-x-2 sm:space-x-3 flex-1 min-w-0">
+                                      <div
+                                        className={`w-6 h-6 sm:w-8 sm:h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${
+                                          exercise.type === "pdf"
+                                            ? "bg-red-500"
+                                            : exercise.type === "qcm"
+                                            ? "bg-blue-500"
+                                            : "bg-green-500"
+                                        }`}
+                                      >
+                                        {exercise.type === "pdf" && (
+                                          <FileText
+                                            size={10}
+                                            className="sm:w-4 sm:h-4 text-white"
+                                          />
+                                        )}
+                                        {exercise.type === "qcm" && (
+                                          <CheckCircle
+                                            size={10}
+                                            className="sm:w-4 sm:h-4 text-white"
+                                          />
+                                        )}
+                                        {exercise.type === "qro" && (
+                                          <Edit3
+                                            size={10}
+                                            className="sm:w-4 sm:h-4 text-white"
+                                          />
+                                        )}
+                                      </div>
+
+                                      <div className="flex-1 min-w-0">
+                                        <div className="flex flex-col sm:flex-row sm:items-center sm:space-x-2 space-y-1 sm:space-y-0">
+                                          <p className="font-medium text-gray-900 truncate text-xs sm:text-sm">
+                                            {exercise.nom}
+                                          </p>
+                                          <span
+                                            className={`px-2 py-0.5 sm:py-1 rounded-full text-xs font-medium w-fit ${
+                                              exercise.type === "pdf"
+                                                ? "bg-red-100 text-red-700"
+                                                : exercise.type === "qcm"
+                                                ? "bg-blue-100 text-blue-700"
+                                                : "bg-green-100 text-green-700"
+                                            }`}
+                                          >
+                                            {exercise.type.toUpperCase()}
+                                          </span>
+                                        </div>
+
+                                        {(exercise.duree_minutes ||
+                                          exercise.questions_count) && (
+                                          <div className="flex flex-wrap items-center gap-2 sm:gap-3 text-xs text-gray-500 mt-1">
+                                            {exercise.duree_minutes && (
+                                              <span className="flex items-center space-x-1">
+                                                <Clock
+                                                  size={10}
+                                                  className="flex-shrink-0"
+                                                />
+                                                <span>
+                                                  {exercise.duree_minutes} min
+                                                </span>
+                                              </span>
+                                            )}
+                                            {exercise.questions_count && (
+                                              <span>
+                                                {exercise.questions_count}{" "}
+                                                questions
+                                              </span>
+                                            )}
+                                          </div>
+                                        )}
+                                      </div>
+                                    </div>
+
+                                    <div className="flex items-center space-x-1 flex-shrink-0">
+                                      {exercise.type === "pdf" && (
+                                        <button
+                                          onClick={() =>
+                                            handleDownloadExercise(exercise)
+                                          }
+                                          className="p-1.5 sm:p-2 text-gray-400 hover:text-gray-600 hover:bg-white rounded-md transition-colors"
+                                        >
+                                          <Eye
+                                            size={12}
+                                            className="sm:w-4 sm:h-4"
+                                          />
+                                        </button>
+                                      )}
+                                      <button
+                                        onClick={() =>
+                                          openEditExerciseForm(exercise)
+                                        }
+                                        className="p-1.5 sm:p-2 text-gray-400 hover:text-gray-600 hover:bg-white rounded-md transition-colors"
+                                      >
+                                        <Pencil
+                                          size={12}
+                                          className="sm:w-4 sm:h-4"
+                                        />
+                                      </button>
+                                      <button
+                                        onClick={() =>
+                                          handleDeleteExercise(exercise.id)
+                                        }
+                                        className="p-1.5 sm:p-2 text-gray-400 hover:text-red-500 hover:bg-white rounded-md transition-colors"
+                                      >
+                                        <Trash2
+                                          size={12}
+                                          className="sm:w-4 sm:h-4"
+                                        />
+                                      </button>
+                                    </div>
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+
+                        {/* Bouton mobile pour ajouter exercice - Always visible on mobile */}
+                        <div className="sm:hidden pt-3 border-t border-gray-100">
+                          <button
+                            onClick={() => handleAddExercice(section)}
+                            className="w-full flex items-center justify-center px-4 py-2 text-xs text-blue-600 bg-blue-50 hover:bg-blue-100 rounded-lg transition-colors"
+                          >
+                            <Plus size={14} className="mr-2" />
+                            Ajouter un exercice
+                          </button>
+                        </div>
                       </div>
-                    </div>
-                  )}
-                </div>
-              );
-            })}
-          </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
 
-          {/* Statistiques - Fully responsive grid */}
-          <div className="bg-white rounded-lg border border-gray-200 p-4 sm:p-6 w-full">
-            <h3 className="text-sm sm:text-base lg:text-lg font-medium text-gray-900 mb-3 sm:mb-4 lg:mb-6">
-              Aperçu du cours
-            </h3>
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 lg:gap-6">
-              <div className="text-center">
-                <div className="text-lg sm:text-xl lg:text-2xl font-bold text-blue-600 mb-1">
-                  {sections.length}
+            {/* Statistiques - Fully responsive grid */}
+            <div className="bg-white rounded-lg border border-gray-200 p-4 sm:p-6 w-full">
+              <h3 className="text-sm sm:text-base lg:text-lg font-medium text-gray-900 mb-3 sm:mb-4 lg:mb-6">
+                Aperçu du cours
+              </h3>
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 lg:gap-6">
+                <div className="text-center">
+                  <div className="text-lg sm:text-xl lg:text-2xl font-bold text-blue-600 mb-1">
+                    {sections.length}
+                  </div>
+                  <p className="text-xs sm:text-sm text-gray-600">Sections</p>
                 </div>
-                <p className="text-xs sm:text-sm text-gray-600">Sections</p>
-              </div>
-              <div className="text-center">
-                <div className="text-lg sm:text-xl lg:text-2xl font-bold text-red-600 mb-1">
-                  {sections.filter((s) => s.has_pdf).length}
+                <div className="text-center">
+                  <div className="text-lg sm:text-xl lg:text-2xl font-bold text-red-600 mb-1">
+                    {sections.filter((s) => s.has_pdf).length}
+                  </div>
+                  <p className="text-xs sm:text-sm text-gray-600">Documents</p>
                 </div>
-                <p className="text-xs sm:text-sm text-gray-600">Documents</p>
-              </div>
-              <div className="text-center">
-                <div className="text-lg sm:text-xl lg:text-2xl font-bold text-purple-600 mb-1">
-                  {sections.filter((s) => s.has_video).length}
+                <div className="text-center">
+                  <div className="text-lg sm:text-xl lg:text-2xl font-bold text-purple-600 mb-1">
+                    {sections.filter((s) => s.has_video).length}
+                  </div>
+                  <p className="text-xs sm:text-sm text-gray-600">Vidéos</p>
                 </div>
-                <p className="text-xs sm:text-sm text-gray-600">Vidéos</p>
-              </div>
-              <div className="text-center">
-                <div className="text-lg sm:text-xl lg:text-2xl font-bold text-green-600 mb-1">
-                  {exercises.length}
+                <div className="text-center">
+                  <div className="text-lg sm:text-xl lg:text-2xl font-bold text-green-600 mb-1">
+                    {exercises.length}
+                  </div>
+                  <p className="text-xs sm:text-sm text-gray-600">Exercices</p>
                 </div>
-                <p className="text-xs sm:text-sm text-gray-600">Exercices</p>
               </div>
             </div>
           </div>
         </div>
-      </div>
-    )}
+      )}
 
-    {/* Loading state - Responsive */}
-    {loadingSections && (
-      <div className="text-center py-6 sm:py-8 px-4">
-        <div className="w-6 h-6 sm:w-8 sm:h-8 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto mb-2">
+      {/* Loading state - Responsive */}
+      {loadingSections && (
+        <div className="text-center py-6 sm:py-8 px-4">
+          <div className="w-6 h-6 sm:w-8 sm:h-8 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto mb-2"></div>
+          <p className="text-gray-600 text-xs sm:text-sm">
+            Chargement des sections...
+          </p>
         </div>
-        <p className="text-gray-600 text-xs sm:text-sm">Chargement des sections...</p>
-      </div>
-    )}
-  </div>
-);
+      )}
+    </div>
+  );
 
   const renderStudentsContent = () => (
     <div className="space-y-6">
@@ -4877,7 +5002,9 @@ const renderSectionsContent = () => (
               className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             >
               <option value="nom">Trier par nom A-Z</option>
-              <option value="date_creation">Trier par date d'inscription</option>
+              <option value="date_creation">
+                Trier par date d'inscription
+              </option>
               <option value="progression">Trier par performance</option>
             </select>
 
@@ -5369,12 +5496,11 @@ const renderSectionsContent = () => (
         {/* Header */}
         <div className="flex items-center h-16 px-6 border-b border-slate-200">
           <div className="flex items-center">
-            <div className="w-8 h-8 bg-blue-600 font-bold text-white text-md rounded-md flex items-center justify-center">
-              F
-            </div>
-            <span className="ml-3 font-bold text-slate-900 text-lg">
-              FastLMS
-            </span>
+            <img
+              src="/logo_tiny.webp" // mets ton fichier logo dans /public
+              alt="Logo TinyLMS"
+              className="w-20 h-20 object-contain"
+            />
           </div>
         </div>
 
@@ -8250,8 +8376,9 @@ const renderSectionsContent = () => (
                         </h4>
                         <p className="text-sm text-yellow-700">
                           Colonnes requises : Nom, Prénom, Email, Téléphone,
-                          Sexe, Date de naissance, filière. <br/> Colonnes optionnelles :
-                          Matricule, Nom complet, Adresse, Ville, etc.
+                          Sexe, Date de naissance, filière. <br /> Colonnes
+                          optionnelles : Matricule, Nom complet, Adresse, Ville,
+                          etc.
                         </p>
                       </div>
                     </div>
@@ -8622,7 +8749,7 @@ const renderSectionsContent = () => (
                                     if (file) {
                                       setStudentForm({
                                         ...studentForm,
-                                        photo: file.name ,
+                                        photo: file.name,
                                       });
                                     }
                                   }}
