@@ -55,77 +55,66 @@ export default function LandingPage(): JSX.Element {
   const features: Feature[] = [
     {
       icon: <Database className="w-8 h-8" />,
-      title: "Centralisation des données pédagogiques",
+      title: "Toutes vos données au même endroit",
       description:
-        "Toutes les informations des étudiants, cours et performances regroupées en un seul endroit pour chaque école.",
+        "Centralisez élèves, cours et documents pour gagner du temps et simplifier l’organisation.",
       benefits: [
-        "Gain de temps considérable",
-        "Fiabilité des données garantie",
-        "Accès unifié et sécurisé",
+        "Accès facile à toutes les informations",
+        "Organisation simplifiée pour le personnel",
+        "Sécurité des données assurée",
       ],
     },
     {
       icon: <Zap className="w-8 h-8" />,
-      title: "Automatisation des tâches administratives",
+      title: "Automatisation des tâches répétitives",
       description:
-        "Inscription des étudiants, suivi des progressions, génération de rapports et notifications automatiques.",
+        "Inscription des élèves, notifications et rappels automatiques, sans efforts supplémentaires.",
       benefits: [
-        "Réduction des erreurs humaines",
-        "Libération du personnel administratif",
-        "Efficacité opérationnelle",
+        "Moins d’erreurs administratives",
+        "Personnel libéré pour l’essentiel",
+        "Processus simplifiés",
       ],
     },
     {
       icon: <BookOpen className="w-8 h-8" />,
-      title: "Gestion flexible des formations",
+      title: "Gestion flexible des cours",
       description:
-        "Possibilité de structurer les cours en modules, ajouter des vidéos ou documents, adapter les plannings.",
+        "Créez vos modules, ajoutez vidéos ou documents et adaptez facilement vos plannings.",
       benefits: [
-        "Expérience enseignants améliorée",
-        "Flexibilité pédagogique",
+        "Cours organisés simplement",
         "Contenus multimédias intégrés",
-      ],
-    },
-    {
-      icon: <TrendingUp className="w-8 h-8" />,
-      title: "Suivi de la progression des étudiants",
-      description:
-        "Visualisation des notes, moyennes et avancement global pour faciliter le tutorat et l'accompagnement.",
-      benefits: [
-        "Tutorat personnalisé",
-        "Détection précoce des difficultés",
-        "Accompagnement ciblé",
+        "Flexibilité pour enseignants et élèves",
       ],
     },
     {
       icon: <Clock className="w-8 h-8" />,
-      title: "Optimisation du temps et de l'organisation",
+      title: "Planification et organisation facilitées",
       description:
-        "Dashboard permettant de planifier et suivre l'emploi du temps des étudiants et du personnel.",
+        "Suivez les emplois du temps de vos cours et des activités de l’école d’un coup d’œil.",
       benefits: [
-        "Réduction des conflits de planning",
-        "Productivité accrue",
-        "Organisation optimisée",
+        "Organisation claire et rapide",
+        "Gain de temps pour le personnel",
+        "Vue d’ensemble de l’activité de l’école",
       ],
     },
     {
       icon: <Smartphone className="w-8 h-8" />,
-      title: "Simplicité d'utilisation",
+      title: "Simple et accessible",
       description:
-        "Interface claire, responsive et orientée mobile-first pour faciliter l'adoption avec peu de formation.",
+        "Interface claire, responsive et mobile-first, facile à prendre en main dès le premier jour.",
       benefits: [
-        "Formation minimale requise",
+        "Aucune compétence technique requise",
         "Accès mobile optimisé",
-        "Design intuitif et moderne",
+        "Utilisation intuitive pour tous",
       ],
     },
   ];
 
   const stats = [
-    { number: "95%", label: "Réduction du temps administratif" },
-    { number: "50+", label: "Écoles déjà adoptées" },
-    { number: "24/7", label: "Support technique disponible" },
-    { number: "99.9%", label: "Disponibilité garantie" },
+    { number: "100%", label: "Focalisé sur les petites écoles" },
+    { number: "0 stress", label: "Administration simplifiée" },
+    { number: "1 clic", label: "Pour créer vos cours et exercices" },
+    { number: "∞", label: "Accès partout, à tout moment" },
   ];
 
   return (
@@ -199,16 +188,16 @@ export default function LandingPage(): JSX.Element {
             </div>
 
             <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6 leading-tight">
-              La plateforme moderne de
+              La solution simple pour
               <br />
               <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-cyan-400 bg-clip-text text-transparent">
-                gestion pédagogique
+                gérer vos cours et vos élèves
               </span>
             </h1>
 
             <p className="text-xl text-gray-600 mb-10 max-w-3xl mx-auto leading-relaxed">
-              La solution complète pour centraliser, automatiser et optimiser la
-              gestion de votre établissement d'enseignement en quelques clics.
+              Offrez à vos étudiants des cours en ligne structurés et
+              accessibles, sans vous compliquer la vie avec plusieurs outils
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
@@ -308,11 +297,14 @@ export default function LandingPage(): JSX.Element {
         <div className="absolute inset-0 bg-black/20"></div>
         <div className="relative max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl md:text-4xl font-bold bg-blue-title mb-6">
-            Prêt à révolutionner votre gestion pédagogique ?
+            Structurez vos cours en ligne facilement, vos étudiants vous
+            remercieront.
           </h2>
           <p className="text-xl text-blue-100 mb-10 max-w-2xl mx-auto bg-blue-text">
-            Rejoignez les établissements qui ont déjà choisi l'efficacité et la
-            modernité
+            Ne perdez plus du temps à multiplier les outils pour gérer vos cours
+            et suivre vos étudiants, TinyLMS vous permet de tout organiser et
+            partager depuis une seule plateforme, fiable et facile à prendre en
+            main.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -322,14 +314,14 @@ export default function LandingPage(): JSX.Element {
             >
               Commencer maintenant
             </button>
-            <button
-              onClick={() =>
-                window.open("https://wa.me/+237653189528", "_blank")
-              }
-              className="border-2 border-white text-white hover:bg-white hover:text-blue-700 px-8 py-4 rounded-xl font-semibold text-lg"
+            <a
+              href="https://api.whatsapp.com/send?phone=237653189528"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="border-2 border-white text-white hover:bg-white hover:text-blue-700 px-8 py-4 rounded-xl font-semibold text-lg inline-block text-center"
             >
               Planifier une démonstration
-            </button>
+            </a>
           </div>
         </div>
 
